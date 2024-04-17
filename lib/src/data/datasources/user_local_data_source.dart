@@ -7,6 +7,8 @@ abstract class UserLocalDataSource {
   Future<void> cacheUsers(List<UserTable> users);
 
   Future<List<UserTable>> getCachedUsers();
+
+  Future<List<UserTable>> searchLocalUsers(String query);
 }
 
 class UserLocalDataSourceImpl implements UserLocalDataSource {
@@ -25,6 +27,26 @@ class UserLocalDataSourceImpl implements UserLocalDataSource {
     final result = await databaseHelper.getCacheUsers('users');
     if (result.isNotEmpty) {
       return result.map((data) => UserTable.fromMap(data)).toList();
+    } else {
+      throw CacheException("Can't get the data");
+    }
+  }
+
+  @override
+  Future<List<UserTable>> searchLocalUsers(String query) async {
+    final result = await databaseHelper.getCacheUsers('users');
+
+    if (result.isNotEmpty) {
+      final filteredResults = result
+          .map((data) => UserTable.fromMap(data))
+          .where((user) => user.name!.toLowerCase().contains(query))
+          .toList();
+
+      if (filteredResults.isNotEmpty) {
+        return filteredResults;
+      } else {
+        throw CacheException("No users found with the specified criteria");
+      }
     } else {
       throw CacheException("Can't get the data");
     }

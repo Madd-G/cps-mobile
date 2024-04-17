@@ -1,8 +1,9 @@
 import 'package:cps_mobile/core/utils/utils.dart';
+import 'package:cps_mobile/src/presentation/pages/search_page.dart';
 import 'package:flutter/material.dart';
 
-class Header extends StatelessWidget {
-  const Header({super.key});
+class HomeHeader extends StatelessWidget {
+  const HomeHeader({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -11,13 +12,18 @@ class Header extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            'CPS Mobile',
-            style: CustomTextStyle.textLargeRegular,
-          ),
+          const Text('CPS Mobile', style: CustomTextStyle.textLargeRegular),
           const SizedBox(height: 12.0),
           TextField(
-            onChanged: (query) {},
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const SearchPage(),
+                ),
+              );
+            },
+            readOnly: true,
             decoration: InputDecoration(
               hintText: 'Search...',
               labelStyle: const TextStyle(
