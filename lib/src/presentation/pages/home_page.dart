@@ -31,7 +31,7 @@ class _HomePageState extends State<HomePage> {
             pinned: true,
             stretch: true,
             bottom: PreferredSize(
-                preferredSize: Size.fromHeight(50.0), child: Header()),
+                preferredSize: Size.fromHeight(50.0), child: HomeHeader()),
           ),
           SliverFillRemaining(
             child: RefreshIndicator(

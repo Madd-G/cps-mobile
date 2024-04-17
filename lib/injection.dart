@@ -4,6 +4,8 @@ import 'package:cps_mobile/src/data/datasources/user_remote_datasources.dart';
 import 'package:cps_mobile/src/data/repositories/user_repository_impl.dart';
 import 'package:cps_mobile/src/domain/repositories/user_repository.dart';
 import 'package:cps_mobile/src/domain/usecases/get_users.dart';
+import 'package:cps_mobile/src/domain/usecases/search_user.dart';
+import 'package:cps_mobile/src/presentation/bloc/search_user_bloc/search_user_bloc.dart';
 import 'package:cps_mobile/src/presentation/bloc/user_bloc/user_list_bloc.dart';
 import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:get_it/get_it.dart';
@@ -23,13 +25,21 @@ Future<void> init() async {
 }
 
 Future<void> _initBloc() async {
-  sl.registerFactory(
-    () => UserListBloc(sl()),
-  );
+  sl
+    ..registerFactory(
+      () => UserListBloc(sl()),
+    )
+    ..registerFactory(
+      () => SearchUserBloc(
+        sl(),
+      ),
+    );
 }
 
 Future<void> _initUseCase() async {
-  sl.registerLazySingleton(() => GetUsers(sl()));
+  sl
+    ..registerLazySingleton(() => GetUsers(sl()))
+    ..registerLazySingleton(() => SearchUser(sl()));
 }
 
 Future<void> _initRepository() async {

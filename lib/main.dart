@@ -1,3 +1,4 @@
+import 'package:cps_mobile/src/presentation/bloc/search_user_bloc/search_user_bloc.dart';
 import 'package:cps_mobile/src/presentation/bloc/user_bloc/user_list_bloc.dart';
 import 'package:cps_mobile/src/presentation/pages/home_page.dart';
 import 'package:flutter/material.dart';
@@ -21,6 +22,9 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider(
           create: (_) => sl<UserListBloc>(),
+        ),
+        BlocProvider(
+          create: (_) => sl<SearchUserBloc>(),
         ),
       ],
       child: MaterialApp(

@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 
 abstract class UserRemoteDataSource {
   Future<UserResponse> getUsers();
+  Future<UserResponse> searchUsers(String query);
 }
 
 class UserRemoteDataSourceImpl implements UserRemoteDataSource {
@@ -15,12 +16,21 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
 
   @override
   Future<UserResponse> getUsers() async {
-    final response = await client.get(
-      Uri.parse('$baseUrl/user'),
-    );
+    final response = await client.get(Uri.parse('$baseUrl/user'));
 
     String data = '{"users": ${response.body}}';
 
+    if (response.statusCode == 200) {
+      return UserResponse.fromJson(json.decode(data));
+    } else {
+      throw ServerException('Failed to connect to the server');
+    }
+  }
+
+  @override
+  Future<UserResponse> searchUsers(String query) async {
+    final response = await client.get(Uri.parse('$baseUrl/user?name=$query'));
+    String data = '{"users": ${response.body}}';
     if (response.statusCode == 200) {
       return UserResponse.fromJson(json.decode(data));
     } else {
