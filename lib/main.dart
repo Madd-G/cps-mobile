@@ -24,10 +24,7 @@ class MyApp extends StatelessWidget {
         ),
       ],
       child: MaterialApp(
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-          useMaterial3: true,
-        ),
+        debugShowCheckedModeBanner: false,
         navigatorObservers: [routeObserver],
         home: const HomePage(),
       ),
