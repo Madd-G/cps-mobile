@@ -30,10 +30,10 @@ class UserRepositoryImpl implements UserRepository {
       try {
         UserResponse result = await remoteDataSource.getUsers();
         localDataSource.cacheUsers(
-          result.cities?.map((user) => UserTable.fromDTO(user)).toList() ?? [],
+          result.users?.map((user) => UserTable.fromDTO(user)).toList() ?? [],
         );
         return Right(
-            result.cities?.map((model) => model.toEntity()).toList() ?? []);
+            result.users?.map((model) => model.toEntity()).toList() ?? []);
       } on ServerException catch (e) {
         return Left(ServerFailure(e.message));
       }
@@ -48,15 +48,14 @@ class UserRepositoryImpl implements UserRepository {
   }
 
   @override
-  Future<Either<Failure, List<UserEntity>>> getFilteredUsers({required String city}) async {
+  Future<Either<Failure, List<UserEntity>>> getFilteredUsers(
+      {required String city}) async {
     if (await networkInfo.isConnected) {
       try {
-        UserResponse result = await remoteDataSource.getFilteredUsers(city: city);
-        localDataSource.cacheUsers(
-          result.cities?.map((user) => UserTable.fromDTO(user)).toList() ?? [],
-        );
+        UserResponse result =
+            await remoteDataSource.getFilteredUsers(city: city);
         return Right(
-            result.cities?.map((model) => model.toEntity()).toList() ?? []);
+            result.users?.map((model) => model.toEntity()).toList() ?? []);
       } on ServerException catch (e) {
         return Left(ServerFailure(e.message));
       }
@@ -64,6 +63,39 @@ class UserRepositoryImpl implements UserRepository {
       try {
         final result = await localDataSource.getCachedUsers();
         return Right(result.map((model) => model.toEntity()).toList());
+      } on CacheException catch (e) {
+        return Left(CacheFailure(e.message));
+      }
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<UserEntity>>> getSortedUsers(
+      {required String sort}) async {
+    if (await networkInfo.isConnected) {
+      try {
+        UserResponse result = await remoteDataSource.getSortedUsers(sort: sort);
+        return Right(
+            result.users?.map((model) => model.toEntity()).toList() ?? []);
+      } on ServerException catch (e) {
+        return Left(ServerFailure(e.message));
+      }
+    } else {
+      try {
+        final List<UserTable> result = await localDataSource.getCachedUsers();
+
+        List<UserTable> sortedResult;
+        if (sort == 'asc') {
+          sortedResult = List.from(result)
+            ..sort((a, b) =>
+                (a.name!.toLowerCase()).compareTo(b.name!.toLowerCase()));
+        } else {
+          sortedResult = List.from(result)
+            ..sort((a, b) =>
+                (b.name!.toLowerCase()).compareTo(a.name!.toLowerCase()));
+        }
+
+        return Right(sortedResult.map((model) => model.toEntity()).toList());
       } on CacheException catch (e) {
         return Left(CacheFailure(e.message));
       }
@@ -102,10 +134,9 @@ class UserRepositoryImpl implements UserRepository {
     try {
       await remoteDataSource.addUser(user: employee);
       final UserResponse employees = await remoteDataSource.getUsers();
-      return Right(employees.cities!);
+      return Right(employees.users!);
     } on ServerException catch (e) {
       return Left(ServerFailure(e.message));
     }
   }
-
 }

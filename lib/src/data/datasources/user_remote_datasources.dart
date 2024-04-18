@@ -14,6 +14,8 @@ abstract class UserRemoteDataSource {
   Future<void> addUser({required UserModel user});
 
   Future<UserResponse> getFilteredUsers({required String city});
+
+  Future<UserResponse> getSortedUsers({required String sort});
 }
 
 class UserRemoteDataSourceImpl implements UserRemoteDataSource {
@@ -46,6 +48,20 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
       return UserResponse.fromJson(json.decode(data));
     } else if (response.statusCode == 404) {
       throw ServerException('No user found');
+    } else {
+      throw ServerException('Failed to connect to the server');
+    }
+  }
+
+  @override
+  Future<UserResponse> getSortedUsers({required String sort}) async {
+    final response =
+        await client.get(Uri.parse('$baseUrl/user?sortBy=name&order=$sort'));
+
+    String data = '{"users": ${response.body}}';
+
+    if (response.statusCode == 200) {
+      return UserResponse.fromJson(json.decode(data));
     } else {
       throw ServerException('Failed to connect to the server');
     }
