@@ -10,7 +10,7 @@ abstract class UserRepository {
 
   Future<Either<Failure, UsersEntity>> searchUsers(String query);
 
-  ResultFuture<List<UserEntity>> addUser({
-    required UserModel employee,
-  });
+  ResultFuture<List<UserEntity>> addUser({required UserModel employee});
+
+  Future<Either<Failure, List<UserEntity>>> getFilteredUsers({required String city});
 }

@@ -55,7 +55,7 @@ class UserTable extends Equatable {
     'id': id,
   };
 
-  UserEntity toEntity() => UserEntity.bookmark(
+  UserEntity toEntity() => UserEntity(
     name: name,
     address: address,
     email: email,

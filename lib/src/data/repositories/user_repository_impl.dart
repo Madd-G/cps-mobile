@@ -30,10 +30,33 @@ class UserRepositoryImpl implements UserRepository {
       try {
         UserResponse result = await remoteDataSource.getUsers();
         localDataSource.cacheUsers(
-          result.users?.map((user) => UserTable.fromDTO(user)).toList() ?? [],
+          result.cities?.map((user) => UserTable.fromDTO(user)).toList() ?? [],
         );
         return Right(
-            result.users?.map((model) => model.toEntity()).toList() ?? []);
+            result.cities?.map((model) => model.toEntity()).toList() ?? []);
+      } on ServerException catch (e) {
+        return Left(ServerFailure(e.message));
+      }
+    } else {
+      try {
+        final result = await localDataSource.getCachedUsers();
+        return Right(result.map((model) => model.toEntity()).toList());
+      } on CacheException catch (e) {
+        return Left(CacheFailure(e.message));
+      }
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<UserEntity>>> getFilteredUsers({required String city}) async {
+    if (await networkInfo.isConnected) {
+      try {
+        UserResponse result = await remoteDataSource.getFilteredUsers(city: city);
+        localDataSource.cacheUsers(
+          result.cities?.map((user) => UserTable.fromDTO(user)).toList() ?? [],
+        );
+        return Right(
+            result.cities?.map((model) => model.toEntity()).toList() ?? []);
       } on ServerException catch (e) {
         return Left(ServerFailure(e.message));
       }
@@ -79,9 +102,10 @@ class UserRepositoryImpl implements UserRepository {
     try {
       await remoteDataSource.addUser(user: employee);
       final UserResponse employees = await remoteDataSource.getUsers();
-      return Right(employees.users!);
+      return Right(employees.cities!);
     } on ServerException catch (e) {
       return Left(ServerFailure(e.message));
     }
   }
+
 }

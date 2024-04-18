@@ -17,16 +17,6 @@ class UserEntity extends Equatable {
   final String? city;
   final String? id;
 
-  const UserEntity.bookmark({
-    this.name,
-    this.address,
-    this.email,
-    this.phoneNumber,
-    this.city,
-    this.id,
-  });
-
-
   @override
   List<Object?> get props => [
         name,

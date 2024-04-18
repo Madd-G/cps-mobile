@@ -15,11 +15,11 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    getNews();
+    getUsers();
   }
 
-  void getNews() {
-    context.read<UserListBloc>().add(UserListEvent());
+  void getUsers() {
+    context.read<UserListBloc>().add(GetUsersEvent());
   }
 
   @override
@@ -32,29 +32,28 @@ class _HomePageState extends State<HomePage> {
               pinned: true,
               stretch: true,
               bottom: PreferredSize(
-                  preferredSize: Size.fromHeight(50.0), child: HomeHeader()),
+                  preferredSize: Size.fromHeight(120.0), child: HomeHeader()),
             ),
             SliverFillRemaining(
               child: RefreshIndicator(
                 onRefresh: () async {
                   await Future.delayed(const Duration(seconds: 1));
-                  getNews();
+                  getUsers();
                 },
                 child: Padding(
                   padding:
                       const EdgeInsets.only(left: 24.0, top: 12.0, right: 24.0),
                   child: BlocListener<AddUserBloc, AddUserState>(
                     listener: (context, state) {
-                      print('...STATE: $state');
                       if (state is AddUserSuccess) {
-                        context.read<UserListBloc>().add(UserListEvent());
-                        print('...TRIGGERED');
+                        context.read<UserListBloc>().add(GetUsersEvent());
                       }
                     },
                     child: ListView(
                       children: [
                         BlocBuilder<UserListBloc, UserListState>(
                           builder: (context, state) {
+                            debugPrint('...UserListState: $state');
                             if (state is UserListLoading) {
                               return Container(
                                 width: double.infinity,
@@ -75,12 +74,26 @@ class _HomePageState extends State<HomePage> {
                                   },
                                 ),
                               );
+                            } else if (state is UserListFilteredLoaded) {
+                              return Container(
+                                width: double.infinity,
+                                padding: const EdgeInsets.only(top: 8),
+                                child: ListView.builder(
+                                  shrinkWrap: true,
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  itemCount: state.users.length,
+                                  itemBuilder: (context, index) {
+                                    var user = state.users[index];
+                                    return UserList(user: user);
+                                  },
+                                ),
+                              );
                             } else if (state is UserListEmpty) {
                               return const Center(child: Text('User is empty'));
                             } else if (state is UserListError) {
                               return Center(child: Text(state.message));
                             } else {
-                              return const Center(child: Text(''));
+                              return const SizedBox.shrink();
                             }
                           },
                         ),

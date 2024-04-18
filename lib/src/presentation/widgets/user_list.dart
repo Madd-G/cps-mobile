@@ -38,7 +38,7 @@ class UserList extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                   ),
                   Text(
-                    user.address ?? 'No Address',
+                    user.city ?? 'No City',
                     style: CustomTextStyle.textSmallRegular
                         .copyWith(color: AppColors.greyColor),
                   ),
