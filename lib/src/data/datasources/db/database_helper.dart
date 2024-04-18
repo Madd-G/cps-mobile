@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:cps_mobile/src/data/models/city_table.dart';
 import 'package:cps_mobile/src/data/models/user_table.dart';
 import 'package:sqflite_sqlcipher/sqflite.dart';
 
@@ -19,6 +20,7 @@ class DatabaseHelper {
   }
 
   static const String _tblCacheUser = 'cache_users';
+  static const String _tblCacheCity = 'cache_cities';
 
   Future<Database> _initDb() async {
     final path = await getDatabasesPath();
@@ -45,6 +47,14 @@ class DatabaseHelper {
         userId INTEGER PRIMARY KEY AUTOINCREMENT
       );
     ''');
+
+    await db.execute('''
+      CREATE TABLE  $_tblCacheCity (
+        name TEXT,
+        id TEXT,
+        cityId INTEGER PRIMARY KEY AUTOINCREMENT
+      );
+    ''');
   }
 
   Future<void> insertCacheTransactionUsers(
@@ -60,10 +70,27 @@ class DatabaseHelper {
     });
   }
 
+  Future<void> insertCacheTransactionCities(
+      List<CityTable> cities, String category) async {
+    final db = await database;
+    db!.transaction((txn) async {
+      for (final city in cities) {
+        final cityJson = city.toJson();
+        txn.insert(_tblCacheCity, cityJson);
+      }
+    });
+  }
+
   Future<List<Map<String, dynamic>>> getCacheUsers(String category) async {
     final db = await database;
-    final List<Map<String, dynamic>> results =
-        await db!.query(_tblCacheUser);
+    final List<Map<String, dynamic>> results = await db!.query(_tblCacheUser);
+
+    return results;
+  }
+
+  Future<List<Map<String, dynamic>>> getCacheCities(String category) async {
+    final db = await database;
+    final List<Map<String, dynamic>> results = await db!.query(_tblCacheCity);
 
     return results;
   }
@@ -71,5 +98,10 @@ class DatabaseHelper {
   Future<int> clearCacheUsers(String category) async {
     final db = await database;
     return db!.delete(_tblCacheUser);
+  }
+
+  Future<int> clearCacheCities(String category) async {
+    final db = await database;
+    return db!.delete(_tblCacheCity);
   }
 }

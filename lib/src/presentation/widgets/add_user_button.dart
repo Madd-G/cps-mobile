@@ -32,33 +32,41 @@ class _AddUserButtonState extends State<AddUserButton> {
 
   @override
   Widget build(BuildContext context) {
-    return FloatingActionButton.extended(
-      foregroundColor: AppColors.primaryColor,
-      backgroundColor: AppColors.primaryColor,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(Radius.circular(360.0)),
-      ),
-      onPressed: () {
-        showAddProductForm(context);
-      },
-      label: Padding(
-        padding: const EdgeInsets.only(top: 8.0, right: 11.5, bottom: 8.0),
-        child: Row(
-          children: [
-            const Padding(
-              padding: EdgeInsets.only(right: 4.0),
-              child: Icon(
-                Icons.add,
-                size: 32,
-                color: AppColors.whiteColor,
+    return BlocBuilder<UserListBloc, UserListState>(
+      builder: (context, state) {
+        if (state is UserListLoaded || state is UserListFilteredLoaded) {
+          return FloatingActionButton.extended(
+            foregroundColor: AppColors.primaryColor,
+            backgroundColor: AppColors.primaryColor,
+            shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(360.0))),
+            onPressed: () {
+              showAddProductForm(context);
+            },
+            label: Padding(
+              padding:
+                  const EdgeInsets.only(top: 8.0, right: 11.5, bottom: 8.0),
+              child: Row(
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.only(right: 4.0),
+                    child: Icon(
+                      Icons.add,
+                      size: 32,
+                      color: AppColors.whiteColor,
+                    ),
+                  ),
+                  Text("User",
+                      style: CustomTextStyle.textLargeMedium
+                          .copyWith(color: AppColors.whiteColor)),
+                ],
               ),
             ),
-            Text("Barang",
-                style: CustomTextStyle.textLargeMedium
-                    .copyWith(color: AppColors.whiteColor)),
-          ],
-        ),
-      ),
+          );
+        } else {
+          return const SizedBox.shrink();
+        }
+      },
     );
   }
 
@@ -69,8 +77,7 @@ class _AddUserButtonState extends State<AddUserButton> {
       backgroundColor: AppColors.backgroundColor,
       context: context,
       shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(12.0)),
-      ),
+          borderRadius: BorderRadius.vertical(top: Radius.circular(12.0))),
       builder: (context) {
         return Padding(
           padding: EdgeInsets.only(

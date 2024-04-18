@@ -32,7 +32,6 @@ class _SearchPageState extends State<SearchPage>
             children: [
               const SizedBox(height: 20.0),
               TextField(
-                key: const Key('edtSearch'),
                 onChanged: (query) {
                   query = query;
                   context
