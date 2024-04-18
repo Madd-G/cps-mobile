@@ -12,8 +12,10 @@ class AddUserInitial extends AddUserState {}
 
 class AddUserLoading extends AddUserState {}
 
-class UserLoadedState extends AddUserState {
-  const UserLoadedState(this.users);
+// class AddUserSuccess extends AddUserState {}
+
+class AddUserSuccess extends AddUserState {
+  const AddUserSuccess(this.users);
 
   final List<UserEntity> users;
 

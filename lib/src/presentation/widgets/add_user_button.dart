@@ -1,6 +1,7 @@
 import 'package:cps_mobile/core/utils/utils.dart';
 import 'package:cps_mobile/src/data/models/user_model.dart';
 import 'package:cps_mobile/src/presentation/bloc/add_user_bloc/add_user_bloc.dart';
+import 'package:cps_mobile/src/presentation/bloc/user_bloc/user_list_bloc.dart';
 import 'package:cps_mobile/src/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -104,6 +105,7 @@ class _AddUserButtonState extends State<AddUserButton> {
                     titleText: "Nama User*",
                     hintText: "Masukkan Nama User",
                     validationErrorMessage: "Nama User Belum diisi",
+                    textInputType: TextInputType.name,
                   ),
                   const SizedBox(height: 16.0),
                   UserTextField(
@@ -111,6 +113,7 @@ class _AddUserButtonState extends State<AddUserButton> {
                     titleText: "Alamat*",
                     hintText: "Masukkan Alamat",
                     validationErrorMessage: "Alamat Belum diisi",
+                    textInputType: TextInputType.streetAddress,
                   ),
                   const SizedBox(height: 16.0),
                   UserTextField(
@@ -118,6 +121,7 @@ class _AddUserButtonState extends State<AddUserButton> {
                     titleText: "Email*",
                     hintText: "Masukkan Email",
                     validationErrorMessage: "Email Belum diisi",
+                    textInputType: TextInputType.emailAddress,
                   ),
                   const SizedBox(height: 16.0),
                   UserTextField(
@@ -125,6 +129,7 @@ class _AddUserButtonState extends State<AddUserButton> {
                     titleText: "Nomor Handphone*",
                     hintText: "Masukkan Nomor Handphone",
                     validationErrorMessage: "Nomor Handphone Belum diisi",
+                    textInputType: TextInputType.phone,
                   ),
                   const SizedBox(height: 16.0),
                   UserTextField(
@@ -132,6 +137,7 @@ class _AddUserButtonState extends State<AddUserButton> {
                     titleText: "Kota*",
                     hintText: "Masukkan Kota",
                     validationErrorMessage: "Kota Belum diisi",
+                    textInputType: TextInputType.text,
                   ),
                   const SizedBox(height: 16.0),
                   GestureDetector(
