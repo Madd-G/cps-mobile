@@ -81,17 +81,27 @@ class DatabaseHelper {
     });
   }
 
-  Future<List<Map<String, dynamic>>> getCacheUsers(String category) async {
+  Future<List<Map<String, dynamic>>> getCacheUsers(String query) async {
     final db = await database;
     final List<Map<String, dynamic>> results = await db!.query(_tblCacheUser);
 
     return results;
   }
 
+  Future<List<Map<String, dynamic>>> getCacheFilteredUsers(String city) async {
+    final db = await database;
+    final List<Map<String, dynamic>> results = await db!.query(
+      _tblCacheUser,
+      where: 'city = ?',
+      whereArgs: [city],
+    );
+    print('...cache result: $results');
+    return results;
+  }
+
   Future<List<Map<String, dynamic>>> getCacheCities(String category) async {
     final db = await database;
     final List<Map<String, dynamic>> results = await db!.query(_tblCacheCity);
-
     return results;
   }
 

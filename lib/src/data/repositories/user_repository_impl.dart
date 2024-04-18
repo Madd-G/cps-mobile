@@ -61,7 +61,7 @@ class UserRepositoryImpl implements UserRepository {
       }
     } else {
       try {
-        final result = await localDataSource.getCachedUsers();
+        final result = await localDataSource.filterLocalUsers(city);
         return Right(result.map((model) => model.toEntity()).toList());
       } on CacheException catch (e) {
         return Left(CacheFailure(e.message));
