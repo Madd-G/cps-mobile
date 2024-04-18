@@ -3,8 +3,10 @@ import 'package:cps_mobile/src/data/datasources/user_local_data_source.dart';
 import 'package:cps_mobile/src/data/datasources/user_remote_datasources.dart';
 import 'package:cps_mobile/src/data/repositories/user_repository_impl.dart';
 import 'package:cps_mobile/src/domain/repositories/user_repository.dart';
+import 'package:cps_mobile/src/domain/usecases/add_user.dart';
 import 'package:cps_mobile/src/domain/usecases/get_users.dart';
 import 'package:cps_mobile/src/domain/usecases/search_user.dart';
+import 'package:cps_mobile/src/presentation/bloc/add_user_bloc/add_user_bloc.dart';
 import 'package:cps_mobile/src/presentation/bloc/search_user_bloc/search_user_bloc.dart';
 import 'package:cps_mobile/src/presentation/bloc/user_bloc/user_list_bloc.dart';
 import 'package:data_connection_checker/data_connection_checker.dart';
@@ -26,20 +28,16 @@ Future<void> init() async {
 
 Future<void> _initBloc() async {
   sl
-    ..registerFactory(
-      () => UserListBloc(sl()),
-    )
-    ..registerFactory(
-      () => SearchUserBloc(
-        sl(),
-      ),
-    );
+    ..registerFactory(() => UserListBloc(sl()))
+    ..registerFactory(() => SearchUserBloc(sl()))
+    ..registerFactory(() => AddUserBloc(sl()));
 }
 
 Future<void> _initUseCase() async {
   sl
     ..registerLazySingleton(() => GetUsers(sl()))
-    ..registerLazySingleton(() => SearchUser(sl()));
+    ..registerLazySingleton(() => SearchUser(sl()))
+    ..registerLazySingleton(() => AddUser(sl()));
 }
 
 Future<void> _initRepository() async {

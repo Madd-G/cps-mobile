@@ -1,22 +1,23 @@
 import 'package:cps_mobile/src/domain/entities/user_entity.dart';
-import 'package:equatable/equatable.dart';
 
-class UserModel extends Equatable {
-  final String? name;
-  final String? address;
-  final String? email;
-  final String? phoneNumber;
-  final String? city;
-  final String? id;
-
+class UserModel extends UserEntity {
   const UserModel({
-    this.name,
-    this.address,
-    this.email,
-    this.phoneNumber,
-    this.city,
-    this.id,
+    super.name,
+    super.address,
+    super.email,
+    super.phoneNumber,
+    super.city,
+    super.id,
   });
+
+  const UserModel.empty()
+      : this(
+            name: '',
+            address: '',
+            email: '',
+            phoneNumber: '',
+            city: '',
+            id: '');
 
   factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
         name: json["name"],
@@ -34,6 +35,14 @@ class UserModel extends Equatable {
         "phoneNumber": phoneNumber,
         "city": city,
         "id": id,
+      };
+
+  Map<String, dynamic> toJsonAddUser() => {
+        "name": name,
+        "address": address,
+        "email": email,
+        "phoneNumber": phoneNumber,
+        "city": city,
       };
 
   UserEntity toEntity() {

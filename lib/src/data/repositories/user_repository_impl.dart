@@ -2,8 +2,10 @@ import 'dart:io';
 
 import 'package:cps_mobile/core/common/common.dart';
 import 'package:cps_mobile/core/errors/errors.dart';
+import 'package:cps_mobile/core/utils/utils.dart';
 import 'package:cps_mobile/src/data/datasources/user_local_data_source.dart';
 import 'package:cps_mobile/src/data/datasources/user_remote_datasources.dart';
+import 'package:cps_mobile/src/data/models/user_model.dart';
 import 'package:cps_mobile/src/data/models/user_response.dart';
 import 'package:cps_mobile/src/data/models/user_table.dart';
 import 'package:cps_mobile/src/domain/entities/user_entity.dart';
@@ -67,6 +69,19 @@ class UserRepositoryImpl implements UserRepository {
       } on CacheException catch (e) {
         return Left(CacheFailure(e.message));
       }
+    }
+  }
+
+  @override
+  ResultFuture<List<UserModel>> addUser({
+    required UserModel employee,
+  }) async {
+    try {
+      await remoteDataSource.addUser(user: employee);
+      final UserResponse employees = await remoteDataSource.getUsers();
+      return Right(employees.users!);
+    } on ServerException catch (e) {
+      return Left(ServerFailure(e.message));
     }
   }
 }
