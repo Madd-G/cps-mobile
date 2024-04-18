@@ -53,7 +53,6 @@ class _HomePageState extends State<HomePage> {
                       children: [
                         BlocBuilder<UserListBloc, UserListState>(
                           builder: (context, state) {
-                            debugPrint('...UserListState: $state');
                             if (state is UserListLoading) {
                               return Container(
                                 width: double.infinity,
@@ -75,6 +74,20 @@ class _HomePageState extends State<HomePage> {
                                 ),
                               );
                             } else if (state is UserListFilteredLoaded) {
+                              return Container(
+                                width: double.infinity,
+                                padding: const EdgeInsets.only(top: 8),
+                                child: ListView.builder(
+                                  shrinkWrap: true,
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  itemCount: state.users.length,
+                                  itemBuilder: (context, index) {
+                                    var user = state.users[index];
+                                    return UserList(user: user);
+                                  },
+                                ),
+                              );
+                            } else if (state is UserListSortedLoaded) {
                               return Container(
                                 width: double.infinity,
                                 padding: const EdgeInsets.only(top: 8),

@@ -9,3 +9,9 @@ class GetFilteredUserListEvent extends UserListEvent {
 
   GetFilteredUserListEvent({required this.city});
 }
+
+class GetSortedUserListEvent extends UserListEvent {
+  String sort;
+
+  GetSortedUserListEvent({required this.sort});
+}

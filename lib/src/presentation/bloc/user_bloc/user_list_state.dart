@@ -29,6 +29,15 @@ class UserListFilteredLoaded extends UserListState {
   List<Object> get props => [users];
 }
 
+class UserListSortedLoaded extends UserListState {
+  final List<UserEntity> users;
+
+  const UserListSortedLoaded(this.users);
+
+  @override
+  List<Object> get props => [users];
+}
+
 class UserListError extends UserListState {
   final String message;
 

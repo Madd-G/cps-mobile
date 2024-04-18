@@ -40,7 +40,7 @@ class _CityDropdownState extends State<CityDropdown> {
                       return DropdownMenuItem<String>(
                         value: val.name,
                         child:
-                        Text(val.name!, style: CustomTextStyle.textRegular),
+                            Text(val.name!, style: CustomTextStyle.textRegular),
                       );
                     }).toList(),
                     hint: Row(
@@ -61,13 +61,13 @@ class _CityDropdownState extends State<CityDropdown> {
                     ),
                     onChanged: (String? val) {
                       setState(
-                            () {
+                        () {
                           selectedCity = val!;
                         },
                       );
-                      context.read<UserListBloc>().add(
-                        GetFilteredUserListEvent(city: selectedCity),
-                      );
+                      context
+                          .read<UserListBloc>()
+                          .add(GetFilteredUserListEvent(city: selectedCity));
                     },
                   ),
                 ),
@@ -108,13 +108,13 @@ class _CityDropdownState extends State<CityDropdown> {
                     ),
                     onChanged: (String? val) {
                       setState(
-                            () {
+                        () {
                           selectedCity = val!;
                         },
                       );
                       context.read<UserListBloc>().add(
-                        GetFilteredUserListEvent(city: selectedCity),
-                      );
+                            GetFilteredUserListEvent(city: selectedCity),
+                          );
                     },
                   ),
                 ),

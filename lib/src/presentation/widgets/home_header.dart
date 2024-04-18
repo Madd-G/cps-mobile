@@ -1,5 +1,6 @@
 import 'package:cps_mobile/core/utils/utils.dart';
 import 'package:cps_mobile/src/presentation/bloc/city_bloc/city_list_bloc.dart';
+import 'package:cps_mobile/src/presentation/bloc/user_bloc/user_list_bloc.dart';
 import 'package:cps_mobile/src/presentation/pages/search_page.dart';
 import 'package:cps_mobile/src/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
@@ -18,11 +19,11 @@ class _HomeHeaderState extends State<HomeHeader> {
   static final List<Map<String, String>> sortList = [
     {
       "label": "A-Z",
-      "value": "A-Z",
+      "value": "asc",
     },
     {
       "label": "Z-A",
-      "value": "Z-A",
+      "value": "desc",
     },
   ];
 
@@ -102,7 +103,7 @@ class _HomeHeaderState extends State<HomeHeader> {
                         items: sortList.map((val) {
                           return DropdownMenuItem<String>(
                             value: val['value'],
-                            child: Text(val['value']!,
+                            child: Text(val['label']!,
                                 style: CustomTextStyle.textRegular),
                           );
                         }).toList(),
@@ -128,6 +129,9 @@ class _HomeHeaderState extends State<HomeHeader> {
                               sortByName = val!;
                             },
                           );
+                          context
+                              .read<UserListBloc>()
+                              .add(GetSortedUserListEvent(sort: sortByName));
                         },
                       ),
                     ),
