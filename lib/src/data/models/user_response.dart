@@ -5,9 +5,7 @@ import 'package:equatable/equatable.dart';
 class UserResponse extends Equatable {
   final List<UserModel>? users;
 
-  const UserResponse({
-    this.users,
-  });
+  const UserResponse({this.users});
 
   factory UserResponse.fromJson(Map<String, dynamic> json) => UserResponse(
         users: json["users"] == null
