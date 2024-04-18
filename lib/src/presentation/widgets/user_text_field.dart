@@ -9,12 +9,14 @@ class UserTextField extends StatelessWidget {
     required this.hintText,
     required this.controller,
     this.validationErrorMessage,
+    required this.textInputType,
   });
 
   final String titleText;
   final String hintText;
   final TextEditingController controller;
   final String? validationErrorMessage;
+  final TextInputType textInputType;
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +31,7 @@ class UserTextField extends StatelessWidget {
           validationErrorMessage: '❗$validationErrorMessage',
           controller: controller,
           hintText: hintText,
-          keyboardType: TextInputType.name,
+          keyboardType: textInputType,
           overrideValidator: false,
           hintStyle: CustomTextStyle.textRegular
               .copyWith(color: AppColors.whiteColor, letterSpacing: -0.01),

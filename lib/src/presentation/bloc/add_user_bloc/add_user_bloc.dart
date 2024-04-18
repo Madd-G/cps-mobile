@@ -18,8 +18,12 @@ class AddUserBloc extends Bloc<AddUserEvent, AddUserState> {
         AddUserParams(user: event.user),
       );
       result.fold(
-        (failure) => emit(AddUserError(failure.message)),
-        (employees) => emit(UserLoadedState(employees)),
+        (failure) {
+          emit(AddUserError(failure.message));
+        },
+        (users) {
+          emit(AddUserSuccess([event.user]));
+        },
       );
     });
   }

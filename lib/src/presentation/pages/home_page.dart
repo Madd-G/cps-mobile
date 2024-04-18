@@ -1,3 +1,4 @@
+import 'package:cps_mobile/src/presentation/bloc/add_user_bloc/add_user_bloc.dart';
 import 'package:cps_mobile/src/presentation/bloc/user_bloc/user_list_bloc.dart';
 import 'package:cps_mobile/src/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
@@ -42,40 +43,49 @@ class _HomePageState extends State<HomePage> {
                 child: Padding(
                   padding:
                       const EdgeInsets.only(left: 24.0, top: 12.0, right: 24.0),
-                  child: ListView(
-                    children: [
-                      BlocBuilder<UserListBloc, UserListState>(
-                        builder: (context, state) {
-                          if (state is UserListLoading) {
-                            return Container(
-                              width: double.infinity,
-                              padding: const EdgeInsets.only(top: 8),
-                              child: const LoadingUserList(),
-                            );
-                          } else if (state is UserListLoaded) {
-                            return Container(
-                              width: double.infinity,
-                              padding: const EdgeInsets.only(top: 8),
-                              child: ListView.builder(
-                                shrinkWrap: true,
-                                physics: const NeverScrollableScrollPhysics(),
-                                itemCount: state.users.length,
-                                itemBuilder: (context, index) {
-                                  var user = state.users[index];
-                                  return UserList(user: user);
-                                },
-                              ),
-                            );
-                          } else if (state is UserListEmpty) {
-                            return const Center(child: Text('User is empty'));
-                          } else if (state is UserListError) {
-                            return Center(child: Text(state.message));
-                          } else {
-                            return const Center(child: Text(''));
-                          }
-                        },
-                      ),
-                    ],
+                  child: BlocListener<AddUserBloc, AddUserState>(
+                    listener: (context, state) {
+                      print('...STATE: $state');
+                      if (state is AddUserSuccess) {
+                        context.read<UserListBloc>().add(UserListEvent());
+                        print('...TRIGGERED');
+                      }
+                    },
+                    child: ListView(
+                      children: [
+                        BlocBuilder<UserListBloc, UserListState>(
+                          builder: (context, state) {
+                            if (state is UserListLoading) {
+                              return Container(
+                                width: double.infinity,
+                                padding: const EdgeInsets.only(top: 8),
+                                child: const LoadingUserList(),
+                              );
+                            } else if (state is UserListLoaded) {
+                              return Container(
+                                width: double.infinity,
+                                padding: const EdgeInsets.only(top: 8),
+                                child: ListView.builder(
+                                  shrinkWrap: true,
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  itemCount: state.users.length,
+                                  itemBuilder: (context, index) {
+                                    var user = state.users[index];
+                                    return UserList(user: user);
+                                  },
+                                ),
+                              );
+                            } else if (state is UserListEmpty) {
+                              return const Center(child: Text('User is empty'));
+                            } else if (state is UserListError) {
+                              return Center(child: Text(state.message));
+                            } else {
+                              return const Center(child: Text(''));
+                            }
+                          },
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
