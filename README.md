@@ -48,7 +48,7 @@ Aplikasi ini menerapkan konsep minimalis dan effisien. Jadi ketika menggunakan a
 1. **Clone the Repository:**
     ```bash
     git clone git@github.com:Madd-G/cps-mobile.git
-    cd movie-app-test
+    cd cps-mobile
     ```
 
 2. **Install Dependencies:**
@@ -60,4 +60,3 @@ Aplikasi ini menerapkan konsep minimalis dan effisien. Jadi ketika menggunakan a
     ```bash
     flutter run
     ```
-
