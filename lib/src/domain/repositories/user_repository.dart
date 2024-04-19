@@ -17,4 +17,6 @@ abstract class UserRepository {
 
   Future<Either<Failure, List<UserEntity>>> getSortedUsers(
       {required String sort});
+
+  Future<Either<Failure, List<UserEntity>>> deleteUser(String userId);
 }

@@ -8,6 +8,7 @@ import 'package:cps_mobile/src/data/repositories/user_repository_impl.dart';
 import 'package:cps_mobile/src/domain/repositories/city_repository.dart';
 import 'package:cps_mobile/src/domain/repositories/user_repository.dart';
 import 'package:cps_mobile/src/domain/usecases/add_user.dart';
+import 'package:cps_mobile/src/domain/usecases/delete_user.dart';
 import 'package:cps_mobile/src/domain/usecases/get_cities.dart';
 import 'package:cps_mobile/src/domain/usecases/get_filtered_user.dart';
 import 'package:cps_mobile/src/domain/usecases/get_users.dart';
@@ -36,7 +37,7 @@ Future<void> init() async {
 
 Future<void> _initBloc() async {
   sl
-    ..registerFactory(() => UserListBloc(sl(), sl(), sl()))
+    ..registerFactory(() => UserListBloc(sl(), sl(), sl(), sl()))
     ..registerFactory(() => SearchUserBloc(sl()))
     ..registerFactory(() => AddUserBloc(sl()))
     ..registerFactory(() => CityBloc(sl()));
@@ -49,7 +50,8 @@ Future<void> _initUseCase() async {
     ..registerLazySingleton(() => AddUser(sl()))
     ..registerLazySingleton(() => GetCities(sl()))
     ..registerLazySingleton(() => GetFilteredUser(sl()))
-    ..registerLazySingleton(() => SortUsers(sl()));
+    ..registerLazySingleton(() => SortUsers(sl()))
+    ..registerLazySingleton(() => DeleteUser(sl()));
 }
 
 Future<void> _initRepository() async {

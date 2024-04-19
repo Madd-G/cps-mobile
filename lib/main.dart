@@ -5,6 +5,7 @@ import 'package:cps_mobile/src/presentation/bloc/user_bloc/user_list_bloc.dart';
 import 'package:cps_mobile/src/presentation/pages/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 import 'core/utils/route_util.dart';
 import 'injection.dart' as di;
 import 'injection.dart';
@@ -35,7 +36,7 @@ class MyApp extends StatelessWidget {
           create: (_) => sl<CityBloc>(),
         ),
       ],
-      child: MaterialApp(
+      child: GetMaterialApp(
         debugShowCheckedModeBanner: false,
         navigatorObservers: [routeObserver],
         home: const HomePage(),

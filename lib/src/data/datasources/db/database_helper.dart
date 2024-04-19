@@ -88,6 +88,16 @@ class DatabaseHelper {
     return results;
   }
 
+  Future<List<Map<String, dynamic>>> clearCacheUsersById(String userId) async {
+    final db = await database;
+    await db!.delete(
+      _tblCacheUser,
+      where: 'id = ?',
+      whereArgs: [userId],
+    );
+    return getCacheUsers("");
+  }
+
   Future<List<Map<String, dynamic>>> getCacheFilteredUsers(String city) async {
     final db = await database;
     final List<Map<String, dynamic>> results = await db!.query(
@@ -95,7 +105,6 @@ class DatabaseHelper {
       where: 'city = ?',
       whereArgs: [city],
     );
-    print('...cache result: $results');
     return results;
   }
 
@@ -110,7 +119,7 @@ class DatabaseHelper {
     return db!.delete(_tblCacheUser);
   }
 
-  Future<int> clearCacheCities(String category) async {
+  Future<int> clearCacheCities() async {
     final db = await database;
     return db!.delete(_tblCacheCity);
   }
