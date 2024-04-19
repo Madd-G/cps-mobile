@@ -151,6 +151,30 @@ class CustomTextStyle {
     letterSpacing: -0.03,
   );
 
+  static const TextStyle textExtraLargeRegular = TextStyle(
+    fontWeight: FontWeight.w400,
+    fontSize: 18,
+    letterSpacing: -0.03,
+  );
+
+  static const TextStyle textExtraLargeMedium = TextStyle(
+    fontWeight: FontWeight.w500,
+    fontSize: 18,
+    letterSpacing: -0.03,
+  );
+
+  static const TextStyle textExtraLargeSemiBold = TextStyle(
+    fontWeight: FontWeight.w600,
+    fontSize: 18,
+    letterSpacing: -0.03,
+  );
+
+  static const TextStyle textExtraLargeBold = TextStyle(
+    fontWeight: FontWeight.w700,
+    fontSize: 18,
+    letterSpacing: -0.03,
+  );
+
   static const TextStyle headingRegular = TextStyle(
     fontWeight: FontWeight.w400,
     fontSize: 24,

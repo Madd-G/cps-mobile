@@ -12,6 +12,8 @@ import 'package:cps_mobile/src/domain/entities/user_entity.dart';
 import 'package:cps_mobile/src/domain/entities/users_entity.dart';
 import 'package:cps_mobile/src/domain/repositories/user_repository.dart';
 import 'package:dartz/dartz.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class UserRepositoryImpl implements UserRepository {
   final UserRemoteDataSource remoteDataSource;
@@ -152,12 +154,18 @@ class UserRepositoryImpl implements UserRepository {
   ResultFuture<List<UserModel>> addUser({
     required UserModel employee,
   }) async {
-    try {
-      await remoteDataSource.addUser(user: employee);
-      final UserResponse employees = await remoteDataSource.getUsers();
-      return Right(employees.users!);
-    } on ServerException catch (e) {
-      return Left(ServerFailure(e.message));
+    if (await networkInfo.isConnected) {
+      try {
+        await remoteDataSource.addUser(user: employee);
+        final UserResponse employees = await remoteDataSource.getUsers();
+        return Right(employees.users!);
+      } on ServerException catch (e) {
+        return Left(ServerFailure(e.message));
+      }
+    } else {
+      print('error');
+      return const Left(ServerFailure(
+          "Anda harus terhubung dengan internet untuk menambah user"));
     }
   }
 }

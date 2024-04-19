@@ -20,14 +20,7 @@ class LoadingUserList extends StatelessWidget {
             ),
             child: Row(
               children: [
-                Container(
-                  width: 110,
-                  height: 80,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
-                    color: Colors.grey[400],
-                  ),
-                ),
+                const CircleAvatar(),
                 const SizedBox(
                   width: 10,
                 ),
@@ -37,7 +30,7 @@ class LoadingUserList extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       SizedBox(
-                        height: 20,
+                        height: 21,
                         width: double.infinity,
                         child: Container(
                           decoration: BoxDecoration(
@@ -50,7 +43,7 @@ class LoadingUserList extends StatelessWidget {
                         height: 8,
                       ),
                       SizedBox(
-                        height: 20,
+                        height: 19,
                         width: double.infinity,
                         child: Container(
                           decoration: BoxDecoration(
@@ -59,6 +52,7 @@ class LoadingUserList extends StatelessWidget {
                           ),
                         ),
                       ),
+                      const Divider(),
                     ],
                   ),
                 ),
@@ -66,7 +60,7 @@ class LoadingUserList extends StatelessWidget {
             ),
           );
         },
-        itemCount: 7,
+        itemCount: 8,
       ),
     );
   }

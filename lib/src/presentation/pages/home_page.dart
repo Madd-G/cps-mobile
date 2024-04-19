@@ -1,8 +1,10 @@
+import 'package:cps_mobile/core/utils/utils.dart';
 import 'package:cps_mobile/src/presentation/bloc/add_user_bloc/add_user_bloc.dart';
 import 'package:cps_mobile/src/presentation/bloc/user_bloc/user_list_bloc.dart';
 import 'package:cps_mobile/src/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -32,7 +34,7 @@ class _HomePageState extends State<HomePage> {
               pinned: true,
               stretch: true,
               bottom: PreferredSize(
-                  preferredSize: Size.fromHeight(120.0), child: HomeHeader()),
+                  preferredSize: Size.fromHeight(130.0), child: HomeHeader()),
             ),
             SliverFillRemaining(
               child: RefreshIndicator(

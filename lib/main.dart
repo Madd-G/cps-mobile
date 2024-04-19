@@ -1,3 +1,4 @@
+import 'package:cps_mobile/core/routes/routes.dart';
 import 'package:cps_mobile/src/presentation/bloc/add_user_bloc/add_user_bloc.dart';
 import 'package:cps_mobile/src/presentation/bloc/city_bloc/city_list_bloc.dart';
 import 'package:cps_mobile/src/presentation/bloc/search_user_bloc/search_user_bloc.dart';
@@ -39,7 +40,8 @@ class MyApp extends StatelessWidget {
       child: GetMaterialApp(
         debugShowCheckedModeBanner: false,
         navigatorObservers: [routeObserver],
-        home: const HomePage(),
+        initialRoute: AppPages.INITIAL,
+        getPages: AppPages.routes,
       ),
     );
   }
