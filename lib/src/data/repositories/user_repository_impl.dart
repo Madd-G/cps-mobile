@@ -48,6 +48,27 @@ class UserRepositoryImpl implements UserRepository {
   }
 
   @override
+  Future<Either<Failure, List<UserEntity>>> deleteUser(String userId) async {
+    if (await networkInfo.isConnected) {
+      UserResponse result = await remoteDataSource.deleteUserRemote(userId);
+      await localDataSource.deleteLocalUser(userId);
+      localDataSource.cacheUsers(
+        result.users?.map((user) => UserTable.fromDTO(user)).toList() ?? [],
+      );
+      return Right(
+          result.users?.map((model) => model.toEntity()).toList() ?? []);
+    } else {
+      await localDataSource.deleteLocalUser(userId);
+      try {
+        final result = await localDataSource.getCachedUsers();
+        return Right(result.map((model) => model.toEntity()).toList());
+      } on CacheException catch (e) {
+        return Left(CacheFailure(e.message));
+      }
+    }
+  }
+
+  @override
   Future<Either<Failure, List<UserEntity>>> getFilteredUsers(
       {required String city}) async {
     if (await networkInfo.isConnected) {

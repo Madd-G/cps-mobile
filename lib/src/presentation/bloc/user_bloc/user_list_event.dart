@@ -15,3 +15,9 @@ class GetSortedUserListEvent extends UserListEvent {
 
   GetSortedUserListEvent({required this.sort});
 }
+
+class DeleteUserEvent extends UserListEvent {
+  String userId;
+
+  DeleteUserEvent({required this.userId});
+}

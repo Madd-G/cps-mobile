@@ -1,8 +1,11 @@
 import 'package:cps_mobile/core/res/app_media.dart';
 import 'package:cps_mobile/core/utils/utils.dart';
 import 'package:cps_mobile/src/domain/entities/user_entity.dart';
+import 'package:cps_mobile/src/presentation/bloc/user_bloc/user_list_bloc.dart';
 import 'package:cps_mobile/src/presentation/widgets/widgets.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 
 class UserDetail extends StatelessWidget {
@@ -97,9 +100,50 @@ class UserDetail extends StatelessWidget {
                 Expanded(
                   child: GestureDetector(
                     onTap: () {
-                      // controller.deleteProduct(user.id!);
-                      // controller.fetchAllProducts();
-                      Get.back();
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            title: const Text(
+                              "Hapus user",
+                              style: CustomTextStyle.textLargeSemiBold,
+                            ),
+                            content: Text(
+                                "Apakah anda yakin ingin menghapus user ${user.name} ?"),
+                            actions: [
+                              GestureDetector(
+                                onTap: () {
+                                  context
+                                      .read<UserListBloc>()
+                                      .add(DeleteUserEvent(userId: user.id!));
+                                  Get.back();
+                                  Get.back();
+                                  Get.showSnackbar(
+                                    GetSnackBar(
+                                      message:
+                                          'Sukses menghapus user ${user.name}',
+                                      icon: const Icon(
+                                        Icons.delete,
+                                        color: AppColors.redSecondaryColor,
+                                      ),
+                                      duration: const Duration(seconds: 3),
+                                      backgroundColor: AppColors.redColor,
+                                    ),
+                                  );
+                                },
+                                child: const Text(
+                                  'Hapus',
+                                  style: TextStyle(color: AppColors.redColor),
+                                ),
+                              ),
+                              const SizedBox(width: 5.0),
+                              GestureDetector(
+                                  onTap: () => Get.back(),
+                                  child: const Text('Tutup')),
+                            ],
+                          );
+                        },
+                      );
                     },
                     child: RoundedContainer(
                       radius: 8.0,
@@ -118,31 +162,6 @@ class UserDetail extends StatelessWidget {
                     ),
                   ),
                 ),
-                const SizedBox(width: 8.0),
-                Expanded(
-                  child: GestureDetector(
-                    onTap: () {
-                      Get.back();
-                      // showUpdateProductForm(context, user);
-                      // controller.fetchCategories();
-                    },
-                    child: RoundedContainer(
-                      radius: 8.0,
-                      borderWidth: 1.5,
-                      containerColor: AppColors.primaryColor,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 10.0),
-                        child: Center(
-                          child: Text(
-                            'Edit User',
-                            style: CustomTextStyle.textLargeMedium
-                                .copyWith(color: AppColors.whiteColor),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
               ],
             ),
             const SizedBox(height: 16.0),
@@ -151,19 +170,4 @@ class UserDetail extends StatelessWidget {
       ),
     );
   }
-
-// Future<dynamic> showUpdateProductForm(BuildContext context, UserEntity user) {
-//   final formKey = GlobalKey<FormState>();
-//   return showModalBottomSheet<dynamic>(
-//     isScrollControlled: true,
-//     backgroundColor: AppColors.backgroundColor,
-//     context: context,
-//     shape: const RoundedRectangleBorder(
-//       borderRadius: BorderRadius.vertical(top: Radius.circular(12.0)),
-//     ),
-//     builder: (context) {
-//       return UpdateProductForm(formKey: formKey, user: user);
-//     },
-//   );
-// }
 }

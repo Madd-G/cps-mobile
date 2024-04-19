@@ -4,9 +4,7 @@ import 'package:equatable/equatable.dart';
 class UsersEntity extends Equatable {
   final List<UserEntity>? users;
 
-  const UsersEntity({
-    this.users,
-  });
+  const UsersEntity({this.users});
 
   @override
   List<Object?> get props => [users];

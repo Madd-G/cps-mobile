@@ -16,6 +16,8 @@ abstract class UserRemoteDataSource {
   Future<UserResponse> getFilteredUsers({required String city});
 
   Future<UserResponse> getSortedUsers({required String sort});
+
+  Future<UserResponse> deleteUserRemote(String userId);
 }
 
 class UserRemoteDataSourceImpl implements UserRemoteDataSource {
@@ -89,6 +91,20 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
     } catch (e, s) {
       debugPrintStack(stackTrace: s);
       throw ServerException(e.toString());
+    }
+  }
+
+  @override
+  Future<UserResponse> deleteUserRemote(String userId) async {
+    await client.delete(Uri.parse('$baseUrl/user/$userId'));
+    final response = await client.get(Uri.parse('$baseUrl/user'));
+    String data = '{"users": ${response.body}}';
+    if (response.statusCode == 200) {
+      return UserResponse.fromJson(json.decode(data));
+    } else if (response.statusCode == 404) {
+      throw ServerException('No user found');
+    } else {
+      throw ServerException('Failed to connect to the server');
     }
   }
 }

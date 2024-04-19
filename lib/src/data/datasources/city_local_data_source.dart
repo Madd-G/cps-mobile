@@ -17,7 +17,7 @@ class CityLocalDataSourceImpl implements CityLocalDataSource {
 
   @override
   Future<void> cacheCities(List<CityTable> cities) async {
-    await databaseHelper.clearCacheCities('cities');
+    await databaseHelper.clearCacheCities();
     await databaseHelper.insertCacheTransactionCities(cities, 'cities');
   }
 
