@@ -112,6 +112,10 @@ class UserDetail extends StatelessWidget {
                                 "Apakah anda yakin ingin menghapus user ${user.name} ?"),
                             actions: [
                               GestureDetector(
+                                  onTap: () => Get.back(),
+                                  child: const Text('Tutup')),
+                              const SizedBox(width: 5.0),
+                              GestureDetector(
                                 onTap: () {
                                   context
                                       .read<UserListBloc>()
@@ -136,10 +140,6 @@ class UserDetail extends StatelessWidget {
                                   style: TextStyle(color: AppColors.redColor),
                                 ),
                               ),
-                              const SizedBox(width: 5.0),
-                              GestureDetector(
-                                  onTap: () => Get.back(),
-                                  child: const Text('Tutup')),
                             ],
                           );
                         },

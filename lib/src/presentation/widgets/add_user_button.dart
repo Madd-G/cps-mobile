@@ -5,6 +5,7 @@ import 'package:cps_mobile/src/presentation/bloc/user_bloc/user_list_bloc.dart';
 import 'package:cps_mobile/src/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 
 class AddUserButton extends StatefulWidget {
   const AddUserButton({super.key});
@@ -34,10 +35,13 @@ class _AddUserButtonState extends State<AddUserButton> {
   Widget build(BuildContext context) {
     return BlocBuilder<UserListBloc, UserListState>(
       builder: (context, state) {
-        if (state is UserListLoaded || state is UserListFilteredLoaded) {
+        if (state is UserListLoaded ||
+            state is UserListFilteredLoaded ||
+            state is UserListSortedLoaded ||
+            state is UserListFilteredLoaded) {
           return FloatingActionButton.extended(
-            foregroundColor: AppColors.primaryColor,
-            backgroundColor: AppColors.primaryColor,
+            foregroundColor: AppColors.blueColor,
+            backgroundColor: AppColors.blueColor,
             shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(360.0))),
             onPressed: () {
@@ -45,14 +49,14 @@ class _AddUserButtonState extends State<AddUserButton> {
             },
             label: Padding(
               padding:
-                  const EdgeInsets.only(top: 8.0, right: 11.5, bottom: 8.0),
+                  const EdgeInsets.symmetric(vertical: 5.0, horizontal: 10.0),
               child: Row(
                 children: [
                   const Padding(
                     padding: EdgeInsets.only(right: 4.0),
                     child: Icon(
                       Icons.add,
-                      size: 32,
+                      size: 25,
                       color: AppColors.whiteColor,
                     ),
                   ),
@@ -100,7 +104,7 @@ class _AddUserButtonState extends State<AddUserButton> {
                       containerColor: AppColors.backgroundColor,
                     ),
                   ),
-                  const SizedBox(height: 8.0),
+                  const SizedBox(height: 20.0),
                   Center(
                     child: Text('Tambah User',
                         style: CustomTextStyle.textLargeMedium
@@ -146,7 +150,7 @@ class _AddUserButtonState extends State<AddUserButton> {
                     validationErrorMessage: "Kota Belum diisi",
                     textInputType: TextInputType.text,
                   ),
-                  const SizedBox(height: 16.0),
+                  const SizedBox(height: 24.0),
                   GestureDetector(
                     onTap: () {
                       FocusManager.instance.primaryFocus?.unfocus();
@@ -162,19 +166,32 @@ class _AddUserButtonState extends State<AddUserButton> {
                         context
                             .read<AddUserBloc>()
                             .add(EventAddUser(user: user));
+                        Get.back();
                       }
+
+                      Get.showSnackbar(
+                        GetSnackBar(
+                          message:
+                              'Sukses menambahkan user ${nameController.text}',
+                          icon: const Icon(
+                            Icons.delete,
+                            color: AppColors.whiteColor,
+                          ),
+                          duration: const Duration(seconds: 3),
+                          backgroundColor: AppColors.primaryColor,
+                        ),
+                      );
                       nameController.clear();
                       addressController.clear();
                       emailController.clear();
                       phoneNumberController.clear();
                       cityController.clear();
-                      Navigator.of(context).pop();
                     },
                     child: Padding(
                       padding: const EdgeInsets.only(bottom: 16.0),
                       child: RoundedContainer(
-                        radius: 360.0,
-                        containerColor: AppColors.primaryColor,
+                        radius: 5.0,
+                        containerColor: AppColors.blueColor,
                         child: Padding(
                           padding: const EdgeInsets.symmetric(
                               vertical: 10.0, horizontal: 111.5),

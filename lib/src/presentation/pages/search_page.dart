@@ -1,8 +1,11 @@
 import 'package:cps_mobile/core/utils/utils.dart';
 import 'package:cps_mobile/src/presentation/bloc/search_user_bloc/search_user_bloc.dart';
+import 'package:cps_mobile/src/presentation/bloc/user_bloc/user_list_bloc.dart';
 import 'package:cps_mobile/src/presentation/widgets/widgets.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({super.key});
@@ -20,9 +23,7 @@ class _SearchPageState extends State<SearchPage>
         appBar: AppBar(
           title: const Text('Search'),
           leading: GestureDetector(
-            onTap: () {
-              Navigator.pop(context);
-            },
+            onTap: () => Get.back(),
             child: const Icon(Icons.arrow_back),
           ),
         ),
@@ -59,6 +60,33 @@ class _SearchPageState extends State<SearchPage>
                   contentPadding: const EdgeInsets.all(12),
                 ),
                 textInputAction: TextInputAction.search,
+              ),
+              const SizedBox(height: 20.0),
+              const SizedBox(height: 10.0),
+              BlocBuilder<SearchUserBloc, SearchUserState>(
+                builder: (context, state) {
+                  if (state is SearchUserInitial) {
+                    return const SizedBox.shrink();
+                  } else if (state is SearchUserLoading) {
+                    return const Padding(
+                      padding: EdgeInsets.only(left: 10.0),
+                      child: SizedBox(
+                        height: 10.0,
+                        width: 10.0,
+                        child: CupertinoActivityIndicator(),
+                      ),
+                    );
+                  } else if (state is SearchUserHasData) {
+                    return Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        '${state.searchResult.length} data ditampilkan',
+                        style: CustomTextStyle.textSmallRegular,
+                      ),
+                    );
+                  }
+                  return const SizedBox.shrink();
+                },
               ),
               Flexible(
                 child: BlocBuilder<SearchUserBloc, SearchUserState>(

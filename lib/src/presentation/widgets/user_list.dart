@@ -39,13 +39,13 @@ class UserList extends StatelessWidget {
                   children: [
                     Text(
                       user.name ?? 'No Name',
-                      style: CustomTextStyle.textBigSemiBold,
+                      style: CustomTextStyle.textExtraLargeSemiBold,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),
                     Text(
                       user.city ?? 'No City',
-                      style: CustomTextStyle.textSmallRegular
+                      style: CustomTextStyle.textRegular
                           .copyWith(color: AppColors.greyColor),
                     ),
                   ],

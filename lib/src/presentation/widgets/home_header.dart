@@ -1,10 +1,13 @@
+import 'package:cps_mobile/core/routes/names.dart';
 import 'package:cps_mobile/core/utils/utils.dart';
 import 'package:cps_mobile/src/presentation/bloc/city_bloc/city_list_bloc.dart';
 import 'package:cps_mobile/src/presentation/bloc/user_bloc/user_list_bloc.dart';
 import 'package:cps_mobile/src/presentation/pages/search_page.dart';
 import 'package:cps_mobile/src/presentation/widgets/widgets.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 
 class HomeHeader extends StatefulWidget {
   const HomeHeader({super.key});
@@ -47,14 +50,7 @@ class _HomeHeaderState extends State<HomeHeader> {
           const Text('CPS Mobile', style: CustomTextStyle.textLargeRegular),
           const SizedBox(height: 12.0),
           TextField(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const SearchPage(),
-                ),
-              );
-            },
+            onTap: () => Get.toNamed(AppRoutes.SEARCH),
             readOnly: true,
             decoration: InputDecoration(
               hintText: 'Search...',
@@ -140,8 +136,34 @@ class _HomeHeaderState extends State<HomeHeader> {
               ),
             ],
           ),
+          const SizedBox(height: 10.0),
+          BlocBuilder<UserListBloc, UserListState>(
+            builder: (context, state) {
+              if (state is UserListLoading) {
+                return const Padding(
+                  padding: EdgeInsets.only(left: 10.0),
+                  child: SizedBox(
+                    height: 10.0,
+                    width: 10.0,
+                    child: CupertinoActivityIndicator(),
+                  ),
+                );
+              } else if (state is UserListLoaded) {
+                return Text(
+                  '${state.users.length} data ditampilkan',
+                  style: CustomTextStyle.textSmallRegular,
+                );
+              }
+              return const SizedBox.shrink();
+            },
+          ),
         ],
       ),
     );
   }
 }
+
+// state is UserListLoaded ||
+// state is UserListFilteredLoaded ||
+// state is UserListSortedLoaded ||
+// state is UserListFilteredLoaded
