@@ -1,6 +1,8 @@
 export 'add_user_button.dart';
 export 'city_dropdown.dart';
 export 'custom_text_field.dart';
+export 'detail_user_item.dart';
+export 'user_detail.dart';
 export 'error.dart';
 export 'home_header.dart';
 export 'initial.dart';
