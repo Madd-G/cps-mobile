@@ -2,8 +2,8 @@ import 'package:cps_mobile/core/routes/routes.dart';
 import 'package:cps_mobile/src/presentation/bloc/add_user_bloc/add_user_bloc.dart';
 import 'package:cps_mobile/src/presentation/bloc/city_bloc/city_list_bloc.dart';
 import 'package:cps_mobile/src/presentation/bloc/search_user_bloc/search_user_bloc.dart';
+import 'package:cps_mobile/src/presentation/bloc/update_user_bloc/update_user_bloc.dart';
 import 'package:cps_mobile/src/presentation/bloc/user_bloc/user_list_bloc.dart';
-import 'package:cps_mobile/src/presentation/pages/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
@@ -24,18 +24,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(
-          create: (_) => sl<UserListBloc>(),
-        ),
-        BlocProvider(
-          create: (_) => sl<SearchUserBloc>(),
-        ),
-        BlocProvider(
-          create: (_) => sl<AddUserBloc>(),
-        ),
-        BlocProvider(
-          create: (_) => sl<CityBloc>(),
-        ),
+        BlocProvider(create: (_) => sl<UserListBloc>()),
+        BlocProvider(create: (_) => sl<SearchUserBloc>()),
+        BlocProvider(create: (_) => sl<AddUserBloc>()),
+        BlocProvider(create: (_) => sl<UpdateUserBloc>()),
+        BlocProvider(create: (_) => sl<CityBloc>()),
       ],
       child: GetMaterialApp(
         debugShowCheckedModeBanner: false,

@@ -10,9 +10,8 @@ class AddUser extends FutureUseCaseWithParams<List<UserEntity>, AddUserParams> {
   final UserRepository _repo;
 
   @override
-  ResultFuture<List<UserEntity>> call(AddUserParams params) => _repo.addUser(
-        employee: params.user,
-      );
+  ResultFuture<List<UserEntity>> call(AddUserParams params) =>
+      _repo.addUser(user: params.user);
 }
 
 class AddUserParams {

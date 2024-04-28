@@ -70,6 +70,21 @@ class DatabaseHelper {
     });
   }
 
+  Future<void> updateUser(UserTable user) async {
+    final db = await database;
+    await db!.update(
+      _tblCacheUser,
+      user.toJson(),
+      where: 'id = ?',
+      whereArgs: [user.id],
+    );
+  }
+
+  Future<void> insertUser(UserTable user) async {
+    final db = await database;
+    await db!.insert(_tblCacheUser, user.toJson());
+  }
+
   Future<void> insertCacheTransactionCities(
       List<CityTable> cities, String category) async {
     final db = await database;

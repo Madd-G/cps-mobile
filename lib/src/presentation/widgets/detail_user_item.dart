@@ -18,12 +18,12 @@ class DetailUserItem extends StatelessWidget {
       children: [
         Text(
           title,
-          style: CustomTextStyle.textMedium
+          style: CustomTextStyle.textBigMedium
               .copyWith(color: AppColors.blackColor),
         ),
         Text(
           value,
-          style: CustomTextStyle.textMedium
+          style: CustomTextStyle.textBigMedium
               .copyWith(color: AppColors.greyColor),
         ),
       ],

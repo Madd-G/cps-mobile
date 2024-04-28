@@ -168,19 +168,6 @@ class _AddUserButtonState extends State<AddUserButton> {
                             .add(EventAddUser(user: user));
                         Get.back();
                       }
-
-                      Get.showSnackbar(
-                        GetSnackBar(
-                          message:
-                              'Sukses menambahkan user ${nameController.text}',
-                          icon: const Icon(
-                            Icons.delete,
-                            color: AppColors.whiteColor,
-                          ),
-                          duration: const Duration(seconds: 3),
-                          backgroundColor: AppColors.primaryColor,
-                        ),
-                      );
                       nameController.clear();
                       addressController.clear();
                       emailController.clear();

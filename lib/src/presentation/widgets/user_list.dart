@@ -14,6 +14,7 @@ class UserList extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
+        FocusManager.instance.primaryFocus?.unfocus();
         showUserDetail(context, user);
       },
       child: Container(

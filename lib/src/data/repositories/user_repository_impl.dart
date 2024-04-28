@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:cps_mobile/core/common/common.dart';
 import 'package:cps_mobile/core/errors/errors.dart';
 import 'package:cps_mobile/core/utils/utils.dart';
@@ -12,8 +11,6 @@ import 'package:cps_mobile/src/domain/entities/user_entity.dart';
 import 'package:cps_mobile/src/domain/entities/users_entity.dart';
 import 'package:cps_mobile/src/domain/repositories/user_repository.dart';
 import 'package:dartz/dartz.dart';
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 class UserRepositoryImpl implements UserRepository {
   final UserRemoteDataSource remoteDataSource;
@@ -50,23 +47,26 @@ class UserRepositoryImpl implements UserRepository {
   }
 
   @override
-  Future<Either<Failure, List<UserEntity>>> deleteUser(String userId) async {
+  ResultFuture<List<UserModel>> addUser({
+    required UserModel user,
+  }) async {
     if (await networkInfo.isConnected) {
-      UserResponse result = await remoteDataSource.deleteUserRemote(userId);
-      await localDataSource.deleteLocalUser(userId);
-      localDataSource.cacheUsers(
-        result.users?.map((user) => UserTable.fromDTO(user)).toList() ?? [],
-      );
-      return Right(
-          result.users?.map((model) => model.toEntity()).toList() ?? []);
-    } else {
-      await localDataSource.deleteLocalUser(userId);
       try {
-        final result = await localDataSource.getCachedUsers();
-        return Right(result.map((model) => model.toEntity()).toList());
-      } on CacheException catch (e) {
-        return Left(CacheFailure(e.message));
+        await remoteDataSource.addUser(user: user);
+
+        final UserResponse users = await remoteDataSource.getUsers();
+
+        await localDataSource.cacheUsers(
+          users.users?.map((user) => UserTable.fromDTO(user)).toList() ?? [],
+        );
+
+        return Right(users.users ?? []);
+      } on ServerException catch (e) {
+        return Left(ServerFailure(e.message));
       }
+    } else {
+      return const Left(ServerFailure(
+          "Anda harus terhubung dengan internet untuk menambah user"));
     }
   }
 
@@ -151,21 +151,50 @@ class UserRepositoryImpl implements UserRepository {
   }
 
   @override
-  ResultFuture<List<UserModel>> addUser({
-    required UserModel employee,
+  ResultFuture<List<UserModel>> updateUser({
+    required String userId,
+    required UserModel user,
   }) async {
     if (await networkInfo.isConnected) {
       try {
-        await remoteDataSource.addUser(user: employee);
-        final UserResponse employees = await remoteDataSource.getUsers();
-        return Right(employees.users!);
+        await remoteDataSource.updateUser(userId: userId, user: user);
+
+        final UserResponse users = await remoteDataSource.getUsers();
+
+        await localDataSource.cacheUsers(
+          users.users?.map((user) => UserTable.fromDTO(user)).toList() ?? [],
+        );
+
+        return Right(users.users ?? []);
       } on ServerException catch (e) {
         return Left(ServerFailure(e.message));
       }
     } else {
-      print('error');
       return const Left(ServerFailure(
-          "Anda harus terhubung dengan internet untuk menambah user"));
+          "Anda harus terhubung dengan internet untuk mengupdate user"));
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<UserEntity>>> deleteUser(String userId) async {
+    if (await networkInfo.isConnected) {
+      UserResponse result = await remoteDataSource.deleteUserRemote(userId);
+      await localDataSource.deleteLocalUser(userId);
+      localDataSource.cacheUsers(
+        result.users?.map((user) => UserTable.fromDTO(user)).toList() ?? [],
+      );
+      return Right(
+          result.users?.map((model) => model.toEntity()).toList() ?? []);
+    } else {
+      return const Left(ServerFailure(
+          "Anda harus terhubung dengan internet untuk menghapus user"));
+      // await localDataSource.deleteLocalUser(userId);
+      // try {
+      //   final result = await localDataSource.getCachedUsers();
+      //   return Right(result.map((model) => model.toEntity()).toList());
+      // } on CacheException catch (e) {
+      //   return Left(CacheFailure(e.message));
+      // }
     }
   }
 }

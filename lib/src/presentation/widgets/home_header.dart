@@ -2,7 +2,6 @@ import 'package:cps_mobile/core/routes/names.dart';
 import 'package:cps_mobile/core/utils/utils.dart';
 import 'package:cps_mobile/src/presentation/bloc/city_bloc/city_list_bloc.dart';
 import 'package:cps_mobile/src/presentation/bloc/user_bloc/user_list_bloc.dart';
-import 'package:cps_mobile/src/presentation/pages/search_page.dart';
 import 'package:cps_mobile/src/presentation/widgets/widgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
