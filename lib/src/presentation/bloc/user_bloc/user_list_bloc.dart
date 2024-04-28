@@ -62,9 +62,9 @@ class UserListBloc extends Bloc<UserListEvent, UserListState> {
       emit(UserListLoading());
       final result = await deleteUser.execute(event.userId);
       result.fold(
-        (failure) => emit(UserListError(failure.message)),
+        (failure) => emit(UserDeletedFailed(failure.message)),
         (usersData) {
-          emit(UserListLoaded(usersData));
+          emit(UserDeletedSuccess(usersData));
           if (usersData.isEmpty) {
             emit(UserListEmpty());
           }

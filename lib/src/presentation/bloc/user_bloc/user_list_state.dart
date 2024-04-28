@@ -20,6 +20,23 @@ class UserListLoaded extends UserListState {
   List<Object> get props => [users];
 }
 
+class UserDeletedSuccess extends UserListState {
+  final List<UserEntity> users;
+
+  const UserDeletedSuccess(this.users);
+
+  @override
+  List<Object> get props => [users];
+}
+
+class UserDeletedFailed extends UserListState {
+  const UserDeletedFailed(this.message);
+
+  final String message;
+  @override
+  List<Object> get props => [message];
+}
+
 class UserListFilteredLoaded extends UserListState {
   final List<UserEntity> users;
 
