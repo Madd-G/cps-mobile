@@ -37,7 +37,7 @@ class UserModel extends UserEntity {
         "id": id,
       };
 
-  Map<String, dynamic> toJsonAddUser() => {
+  Map<String, dynamic> toJsonWithoutId() => {
         "name": name,
         "address": address,
         "email": email,

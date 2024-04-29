@@ -14,10 +14,12 @@ import 'package:cps_mobile/src/domain/usecases/get_filtered_user.dart';
 import 'package:cps_mobile/src/domain/usecases/get_users.dart';
 import 'package:cps_mobile/src/domain/usecases/search_user.dart';
 import 'package:cps_mobile/src/domain/usecases/sort_users.dart';
+import 'package:cps_mobile/src/domain/usecases/update_user.dart';
 import 'package:cps_mobile/src/presentation/bloc/add_user_bloc/add_user_bloc.dart';
 import 'package:cps_mobile/src/presentation/bloc/city_bloc/city_list_bloc.dart';
 import 'package:cps_mobile/src/presentation/bloc/search_user_bloc/search_user_bloc.dart';
-import 'package:cps_mobile/src/presentation/bloc/user_bloc/user_list_bloc.dart';
+import 'package:cps_mobile/src/presentation/bloc/update_user_bloc/update_user_bloc.dart';
+import 'package:cps_mobile/src/presentation/bloc/user_bloc/user_bloc.dart';
 import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:get_it/get_it.dart';
 
@@ -37,9 +39,10 @@ Future<void> init() async {
 
 Future<void> _initBloc() async {
   sl
-    ..registerFactory(() => UserListBloc(sl(), sl(), sl(), sl()))
+    ..registerFactory(() => UserBloc(sl(), sl(), sl(), sl()))
     ..registerFactory(() => SearchUserBloc(sl()))
     ..registerFactory(() => AddUserBloc(sl()))
+    ..registerFactory(() => UpdateUserBloc(sl()))
     ..registerFactory(() => CityBloc(sl()));
 }
 
@@ -51,6 +54,7 @@ Future<void> _initUseCase() async {
     ..registerLazySingleton(() => GetCities(sl()))
     ..registerLazySingleton(() => GetFilteredUser(sl()))
     ..registerLazySingleton(() => SortUsers(sl()))
+    ..registerLazySingleton(() => UpdateUser(sl()))
     ..registerLazySingleton(() => DeleteUser(sl()));
 }
 

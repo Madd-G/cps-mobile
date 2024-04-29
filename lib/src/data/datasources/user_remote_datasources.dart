@@ -17,6 +17,9 @@ abstract class UserRemoteDataSource {
 
   Future<UserResponse> getSortedUsers({required String sort});
 
+  Future<void> updateUser(
+      {required String userId, required UserModel user});
+
   Future<UserResponse> deleteUserRemote(String userId);
 }
 
@@ -87,7 +90,26 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
     required UserModel user,
   }) async {
     try {
-      await client.post(Uri.parse('$baseUrl/user'), body: user.toJsonAddUser());
+      await client.post(
+        Uri.parse('$baseUrl/user'),
+        body: user.toJsonWithoutId(),
+      );
+    } catch (e, s) {
+      debugPrintStack(stackTrace: s);
+      throw ServerException(e.toString());
+    }
+  }
+
+  @override
+  Future<void> updateUser({
+    required String userId,
+    required UserModel user,
+  }) async {
+    try {
+      await client.put(
+        Uri.parse('$baseUrl/user/$userId'),
+        body: user.toJsonWithoutId(),
+      );
     } catch (e, s) {
       debugPrintStack(stackTrace: s);
       throw ServerException(e.toString());

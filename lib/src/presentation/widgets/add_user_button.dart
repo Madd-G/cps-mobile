@@ -1,7 +1,7 @@
 import 'package:cps_mobile/core/utils/utils.dart';
 import 'package:cps_mobile/src/data/models/user_model.dart';
 import 'package:cps_mobile/src/presentation/bloc/add_user_bloc/add_user_bloc.dart';
-import 'package:cps_mobile/src/presentation/bloc/user_bloc/user_list_bloc.dart';
+import 'package:cps_mobile/src/presentation/bloc/user_bloc/user_bloc.dart';
 import 'package:cps_mobile/src/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -33,12 +33,14 @@ class _AddUserButtonState extends State<AddUserButton> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<UserListBloc, UserListState>(
+    return BlocBuilder<UserBloc, UserState>(
       builder: (context, state) {
         if (state is UserListLoaded ||
             state is UserListFilteredLoaded ||
             state is UserListSortedLoaded ||
-            state is UserListFilteredLoaded) {
+            state is UserListFilteredLoaded ||
+            state is UserDeletedSuccess ||
+            state is UserDeletedFailed) {
           return FloatingActionButton.extended(
             foregroundColor: AppColors.blueColor,
             backgroundColor: AppColors.blueColor,
@@ -168,19 +170,6 @@ class _AddUserButtonState extends State<AddUserButton> {
                             .add(EventAddUser(user: user));
                         Get.back();
                       }
-
-                      Get.showSnackbar(
-                        GetSnackBar(
-                          message:
-                              'Sukses menambahkan user ${nameController.text}',
-                          icon: const Icon(
-                            Icons.delete,
-                            color: AppColors.whiteColor,
-                          ),
-                          duration: const Duration(seconds: 3),
-                          backgroundColor: AppColors.primaryColor,
-                        ),
-                      );
                       nameController.clear();
                       addressController.clear();
                       emailController.clear();

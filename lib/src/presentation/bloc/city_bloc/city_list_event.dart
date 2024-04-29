@@ -1,3 +1,5 @@
 part of 'city_list_bloc.dart';
 
-class CityEvent { }
+abstract class CityEvent {}
+
+class GetCity extends CityEvent {}

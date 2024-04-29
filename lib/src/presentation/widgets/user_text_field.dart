@@ -1,5 +1,5 @@
 import 'package:cps_mobile/core/utils/utils.dart';
-import 'package:cps_mobile/src/presentation/widgets/widgets.dart';
+import 'package:cps_mobile/core/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 
 class UserTextField extends StatelessWidget {
@@ -24,7 +24,7 @@ class UserTextField extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(titleText,
-            style: CustomTextStyle.textMedium
+            style: CustomTextStyle.textBigMedium
                 .copyWith(color: AppColors.blackColor, letterSpacing: -0.01)),
         const SizedBox(height: 4.0),
         CustomTextField(
@@ -33,7 +33,7 @@ class UserTextField extends StatelessWidget {
           hintText: hintText,
           keyboardType: textInputType,
           overrideValidator: false,
-          hintStyle: CustomTextStyle.textRegular
+          hintStyle: CustomTextStyle.textBigRegular
               .copyWith(color: AppColors.whiteColor, letterSpacing: -0.01),
           // onChanged: (String value) {},
         ),

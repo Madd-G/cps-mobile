@@ -10,13 +10,16 @@ abstract class UserRepository {
 
   Future<Either<Failure, UsersEntity>> searchUsers(String query);
 
-  ResultFuture<List<UserEntity>> addUser({required UserModel employee});
+  ResultFuture<List<UserEntity>> addUser({required UserModel user});
 
   Future<Either<Failure, List<UserEntity>>> getFilteredUsers(
       {required String city});
 
   Future<Either<Failure, List<UserEntity>>> getSortedUsers(
       {required String sort});
+
+  Future<Either<Failure, List<UserEntity>>> updateUser(
+      {required String userId, required UserModel user});
 
   Future<Either<Failure, List<UserEntity>>> deleteUser(String userId);
 }

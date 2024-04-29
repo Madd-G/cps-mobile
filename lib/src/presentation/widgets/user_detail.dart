@@ -1,9 +1,8 @@
 import 'package:cps_mobile/core/res/app_media.dart';
 import 'package:cps_mobile/core/utils/utils.dart';
 import 'package:cps_mobile/src/domain/entities/user_entity.dart';
-import 'package:cps_mobile/src/presentation/bloc/user_bloc/user_list_bloc.dart';
+import 'package:cps_mobile/src/presentation/bloc/user_bloc/user_bloc.dart';
 import 'package:cps_mobile/src/presentation/widgets/widgets.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
@@ -38,6 +37,7 @@ class UserDetail extends StatelessWidget {
             Center(child: Image.asset(AppMedia.avatar, fit: BoxFit.fill)),
             const SizedBox(height: 20.0),
             RoundedContainer(
+              radius: 8.0,
               child: Padding(
                 padding: const EdgeInsets.symmetric(
                     vertical: 12.0, horizontal: 16.0),
@@ -72,7 +72,7 @@ class UserDetail extends StatelessWidget {
             const SizedBox(height: 20.0),
             RoundedContainer(
               containerColor: AppColors.backgroundColor,
-              radius: 10.0,
+              radius: 4.0,
               child: Padding(
                 padding: const EdgeInsets.symmetric(
                     vertical: 12.0, horizontal: 16.0),
@@ -81,12 +81,12 @@ class UserDetail extends StatelessWidget {
                   children: [
                     Text(
                       'Nomor Handphone',
-                      style: CustomTextStyle.textMedium
+                      style: CustomTextStyle.textBigMedium
                           .copyWith(color: AppColors.blackColor),
                     ),
                     Text(
                       user.phoneNumber!,
-                      style: CustomTextStyle.textMedium
+                      style: CustomTextStyle.textBigMedium
                           .copyWith(color: AppColors.blackColor),
                     ),
                   ],
@@ -118,22 +118,10 @@ class UserDetail extends StatelessWidget {
                               GestureDetector(
                                 onTap: () {
                                   context
-                                      .read<UserListBloc>()
+                                      .read<UserBloc>()
                                       .add(DeleteUserEvent(userId: user.id!));
                                   Get.back();
                                   Get.back();
-                                  Get.showSnackbar(
-                                    GetSnackBar(
-                                      message:
-                                          'Sukses menghapus user ${user.name}',
-                                      icon: const Icon(
-                                        Icons.delete,
-                                        color: AppColors.redSecondaryColor,
-                                      ),
-                                      duration: const Duration(seconds: 3),
-                                      backgroundColor: AppColors.redColor,
-                                    ),
-                                  );
                                 },
                                 child: const Text(
                                   'Hapus',
@@ -162,12 +150,50 @@ class UserDetail extends StatelessWidget {
                     ),
                   ),
                 ),
+                const SizedBox(width: 12.0),
+                Expanded(
+                  child: GestureDetector(
+                    onTap: () {
+                      showUserUpdate(context, user);
+                    },
+                    child: RoundedContainer(
+                      radius: 8.0,
+                      borderWidth: 1.5,
+                      borderColor: AppColors.borderPrimary,
+                      containerColor: AppColors.primaryColor,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 10.0),
+                        child: Center(
+                          child: Text(
+                            'Update User',
+                            style: CustomTextStyle.textLargeMedium
+                                .copyWith(color: AppColors.whiteColor),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
               ],
             ),
             const SizedBox(height: 16.0),
           ],
         ),
       ),
+    );
+  }
+
+  Future<dynamic> showUserUpdate(BuildContext context, UserEntity user) {
+    return showModalBottomSheet<dynamic>(
+      isScrollControlled: true,
+      backgroundColor: AppColors.backgroundColor,
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(12.0)),
+      ),
+      builder: (context) {
+        return UserUpdateSheet(user: user);
+      },
     );
   }
 }
