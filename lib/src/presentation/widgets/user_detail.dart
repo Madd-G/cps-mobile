@@ -1,7 +1,7 @@
 import 'package:cps_mobile/core/res/app_media.dart';
 import 'package:cps_mobile/core/utils/utils.dart';
 import 'package:cps_mobile/src/domain/entities/user_entity.dart';
-import 'package:cps_mobile/src/presentation/bloc/user_bloc/user_list_bloc.dart';
+import 'package:cps_mobile/src/presentation/bloc/user_bloc/user_bloc.dart';
 import 'package:cps_mobile/src/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -118,7 +118,7 @@ class UserDetail extends StatelessWidget {
                               GestureDetector(
                                 onTap: () {
                                   context
-                                      .read<UserListBloc>()
+                                      .read<UserBloc>()
                                       .add(DeleteUserEvent(userId: user.id!));
                                   Get.back();
                                   Get.back();

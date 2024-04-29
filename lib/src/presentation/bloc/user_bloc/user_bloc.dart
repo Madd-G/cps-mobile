@@ -6,17 +6,17 @@ import 'package:cps_mobile/src/domain/usecases/sort_users.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-part 'user_list_event.dart';
+part 'user_event.dart';
 
-part 'user_list_state.dart';
+part 'user_state.dart';
 
-class UserListBloc extends Bloc<UserListEvent, UserListState> {
+class UserBloc extends Bloc<UserEvent, UserState> {
   final GetUsers getUsers;
   final GetFilteredUser getFilteredUser;
   final SortUsers getSortedUser;
   final DeleteUser deleteUser;
 
-  UserListBloc(
+  UserBloc(
       this.getUsers, this.getFilteredUser, this.getSortedUser, this.deleteUser)
       : super(UserListEmpty()) {
     on<GetUsersEvent>((event, emit) async {
@@ -32,7 +32,7 @@ class UserListBloc extends Bloc<UserListEvent, UserListState> {
         },
       );
     });
-    on<GetFilteredUserListEvent>((event, emit) async {
+    on<GetFilteredUsersEvent>((event, emit) async {
       emit(UserListLoading());
       final result = await getFilteredUser.execute(event.city);
       result.fold(
@@ -45,7 +45,7 @@ class UserListBloc extends Bloc<UserListEvent, UserListState> {
         },
       );
     });
-    on<GetSortedUserListEvent>((event, emit) async {
+    on<GetSortedUsersEvent>((event, emit) async {
       emit(UserListLoading());
       final result = await getSortedUser.execute(event.sort);
       result.fold(
@@ -65,6 +65,7 @@ class UserListBloc extends Bloc<UserListEvent, UserListState> {
         (failure) => emit(UserDeletedFailed(failure.message)),
         (usersData) {
           emit(UserDeletedSuccess(usersData));
+          emit(UserListLoaded(usersData));
           if (usersData.isEmpty) {
             emit(UserListEmpty());
           }

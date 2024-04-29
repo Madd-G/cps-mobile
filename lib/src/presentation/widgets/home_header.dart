@@ -1,7 +1,7 @@
 import 'package:cps_mobile/core/routes/names.dart';
 import 'package:cps_mobile/core/utils/utils.dart';
 import 'package:cps_mobile/src/presentation/bloc/city_bloc/city_list_bloc.dart';
-import 'package:cps_mobile/src/presentation/bloc/user_bloc/user_list_bloc.dart';
+import 'package:cps_mobile/src/presentation/bloc/user_bloc/user_bloc.dart';
 import 'package:cps_mobile/src/presentation/widgets/widgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -16,19 +16,6 @@ class HomeHeader extends StatefulWidget {
 }
 
 class _HomeHeaderState extends State<HomeHeader> {
-  String sortByName = 'A-Z';
-
-  static final List<Map<String, String>> sortList = [
-    {
-      "label": "A-Z",
-      "value": "asc",
-    },
-    {
-      "label": "Z-A",
-      "value": "desc",
-    },
-  ];
-
   @override
   void initState() {
     super.initState();
@@ -36,7 +23,7 @@ class _HomeHeaderState extends State<HomeHeader> {
   }
 
   void getCities() {
-    context.read<CityBloc>().add(CityEvent());
+    context.read<CityBloc>().add(GetCity());
   }
 
   @override
@@ -74,69 +61,9 @@ class _HomeHeaderState extends State<HomeHeader> {
             textInputAction: TextInputAction.search,
           ),
           const SizedBox(height: 12.0),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const CityDropdown(),
-              const SizedBox(width: 10.0),
-              Expanded(
-                child: RoundedContainer(
-                  height: 45.0,
-                  radius: 5.0,
-                  containerColor: AppColors.redSecondaryColor,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: DropdownButtonHideUnderline(
-                      child: DropdownButton<String>(
-                        padding: EdgeInsets.zero,
-                        isDense: true,
-                        icon: const Icon(
-                          Icons.keyboard_arrow_down,
-                          color: AppColors.greyColor,
-                          size: 15.0,
-                        ),
-                        items: sortList.map((val) {
-                          return DropdownMenuItem<String>(
-                            value: val['value'],
-                            child: Text(val['label']!,
-                                style: CustomTextStyle.textRegular),
-                          );
-                        }).toList(),
-                        hint: Row(
-                          children: <Widget>[
-                            const Icon(
-                              Icons.abc,
-                              color: AppColors.greyColor,
-                              size: 15.0,
-                            ),
-                            const SizedBox(width: 5.0),
-                            Text(
-                              sortByName,
-                              style: CustomTextStyle.textRegular.copyWith(
-                                color: AppColors.greyColor,
-                              ),
-                            ),
-                          ],
-                        ),
-                        onChanged: (String? val) {
-                          setState(
-                            () {
-                              sortByName = val!;
-                            },
-                          );
-                          context
-                              .read<UserListBloc>()
-                              .add(GetSortedUserListEvent(sort: sortByName));
-                        },
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
+          const FilterSection(),
           const SizedBox(height: 10.0),
-          BlocBuilder<UserListBloc, UserListState>(
+          BlocBuilder<UserBloc, UserState>(
             builder: (context, state) {
               if (state is UserListLoading) {
                 return const Padding(
@@ -153,6 +80,42 @@ class _HomeHeaderState extends State<HomeHeader> {
                   style: CustomTextStyle.textSmallRegular,
                 );
               }
+              if (state is UserListFilteredLoaded) {
+                return Row(
+                  children: [
+                    Text(
+                      '${state.users.length} data ditampilkan',
+                      style: CustomTextStyle.textSmallRegular,
+                    ),
+                    const SizedBox(width: 10.0),
+                    GestureDetector(
+                      onTap: () {
+                        context.read<UserBloc>().add(GetUsersEvent());
+                        context.read<CityBloc>().add(GetCity());
+                      },
+                      child: const RoundedContainer(
+                        radius: 4.0,
+                        child: Padding(
+                          padding: EdgeInsets.fromLTRB(3, 2, 8, 2),
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.close,
+                                size: 10.0,
+                              ),
+                              SizedBox(width: 5.0),
+                              Text(
+                                'Reset filter',
+                                style: CustomTextStyle.textExtraSmallRegular,
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                );
+              }
               return const SizedBox.shrink();
             },
           ),
@@ -161,8 +124,3 @@ class _HomeHeaderState extends State<HomeHeader> {
     );
   }
 }
-
-// state is UserListLoaded ||
-// state is UserListFilteredLoaded ||
-// state is UserListSortedLoaded ||
-// state is UserListFilteredLoaded

@@ -1,5 +1,5 @@
 import 'package:cps_mobile/core/utils/utils.dart';
-import 'package:cps_mobile/src/presentation/widgets/widgets.dart';
+import 'package:cps_mobile/core/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 
 class UserTextField extends StatelessWidget {

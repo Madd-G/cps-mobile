@@ -1,7 +1,7 @@
 import 'package:cps_mobile/core/utils/utils.dart';
 import 'package:cps_mobile/src/presentation/bloc/add_user_bloc/add_user_bloc.dart';
 import 'package:cps_mobile/src/presentation/bloc/update_user_bloc/update_user_bloc.dart';
-import 'package:cps_mobile/src/presentation/bloc/user_bloc/user_list_bloc.dart';
+import 'package:cps_mobile/src/presentation/bloc/user_bloc/user_bloc.dart';
 import 'package:cps_mobile/src/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -22,7 +22,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   void getUsers() {
-    context.read<UserListBloc>().add(GetUsersEvent());
+    context.read<UserBloc>().add(GetUsersEvent());
   }
 
   @override
@@ -30,6 +30,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       body: SafeArea(
         child: CustomScrollView(
+          physics: const NeverScrollableScrollPhysics(),
           slivers: [
             const SliverAppBar(
               pinned: true,
@@ -49,96 +50,43 @@ class _HomePageState extends State<HomePage> {
                   child: BlocListener<UpdateUserBloc, UpdateUserState>(
                     listener: (context, state) {
                       if (state is UpdateUserSuccess) {
-                        Get.showSnackbar(
-                          const GetSnackBar(
-                            message: 'Berhasil mengupdate user',
-                            icon: Icon(
-                              Icons.update,
-                              color: AppColors.whiteColor,
-                            ),
-                            duration: Duration(seconds: 3),
-                            backgroundColor: AppColors.primaryColor,
-                          ),
-                        );
-                        context.read<UserListBloc>().add(GetUsersEvent());
+                        showSnackBar("Berhasil mengupdate user", Icons.update,
+                            AppColors.primaryColor);
+                        context.read<UserBloc>().add(GetUsersEvent());
                       } else if (state is UpdateUserError) {
-                        Get.showSnackbar(
-                          const GetSnackBar(
-                            message:
-                                'Oops... Anda harus terhubung dengan internet untuk mengupdate user',
-                            icon: Icon(
-                              Icons.error,
-                              color: AppColors.whiteColor,
-                            ),
-                            duration: Duration(seconds: 3),
-                            backgroundColor: AppColors.redColor,
-                          ),
+                        showSnackBar(
+                          "Oops... Anda harus terhubung dengan internet untuk mengupdate user",
+                          Icons.error,
+                          AppColors.redColor,
                         );
                       }
                     },
                     child: BlocListener<AddUserBloc, AddUserState>(
                       listener: (context, state) {
                         if (state is AddUserSuccess) {
-                          Get.showSnackbar(
-                            const GetSnackBar(
-                              message: 'Sukses menambahkan user',
-                              icon: Icon(
-                                Icons.save,
-                                color: AppColors.whiteColor,
-                              ),
-                              duration: Duration(seconds: 3),
-                              backgroundColor: AppColors.primaryColor,
-                            ),
-                          );
-                          context.read<UserListBloc>().add(GetUsersEvent());
+                          showSnackBar("Sukses menambahkan user", Icons.save,
+                              AppColors.primaryColor);
+                          context.read<UserBloc>().add(GetUsersEvent());
                         } else if (state is AddUserError) {
-                          Get.showSnackbar(
-                            const GetSnackBar(
-                              message:
-                                  'Oops... Anda harus terhubung dengan internet untuk menambah user',
-                              icon: Icon(
-                                Icons.error,
-                                color: AppColors.whiteColor,
-                              ),
-                              duration: Duration(seconds: 3),
-                              backgroundColor: AppColors.redColor,
-                            ),
-                          );
+                          showSnackBar(
+                              "Oops... Anda harus terhubung dengan internet untuk menambah user",
+                              Icons.error,
+                              AppColors.redColor);
                         }
                       },
                       child: ListView(
                         children: [
-                          BlocConsumer<UserListBloc, UserListState>(
-                            listener:
-                                (BuildContext context, UserListState state) {
+                          BlocConsumer<UserBloc, UserState>(
+                            listener: (BuildContext context, UserState state) {
                               if (state is UserDeletedSuccess) {
-                                Get.showSnackbar(
-                                  const GetSnackBar(
-                                    message: 'Sukses menghapus user',
-                                    icon: Icon(
-                                      Icons.delete,
-                                      color: AppColors.redSecondaryColor,
-                                    ),
-                                    duration: Duration(seconds: 3),
-                                    backgroundColor: AppColors.primaryColor,
-                                  ),
-                                );
+                                showSnackBar("Sukses menghapus user",
+                                    Icons.delete, AppColors.primaryColor);
                               } else if (state is UserDeletedFailed) {
-                                Get.showSnackbar(
-                                  const GetSnackBar(
-                                    message:
-                                        'Oops... Anda harus terhubung dengan internet untuk menghapus user',
-                                    icon: Icon(
-                                      Icons.error,
-                                      color: AppColors.whiteColor,
-                                    ),
-                                    duration: Duration(seconds: 3),
-                                    backgroundColor: AppColors.redColor,
-                                  ),
-                                );
-                                context
-                                    .read<UserListBloc>()
-                                    .add(GetUsersEvent());
+                                showSnackBar(
+                                    "Oops... Anda harus terhubung dengan internet untuk menghapus user",
+                                    Icons.error,
+                                    AppColors.redColor);
+                                context.read<UserBloc>().add(GetUsersEvent());
                               }
                             },
                             builder: (context, state) {
@@ -229,6 +177,17 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       floatingActionButton: const AddUserButton(),
+    );
+  }
+
+  showSnackBar(String message, IconData icon, Color color) {
+    Get.showSnackbar(
+      GetSnackBar(
+        message: message,
+        icon: Icon(icon, color: AppColors.whiteColor),
+        duration: const Duration(seconds: 3),
+        backgroundColor: color,
+      ),
     );
   }
 }

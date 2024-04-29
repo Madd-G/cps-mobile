@@ -47,7 +47,6 @@ class _UserUpdateSheetState extends State<UserUpdateSheet> {
 
   @override
   Widget build(BuildContext context) {
-    final updateFormKey = GlobalKey<FormState>();
     final Size size = MediaQuery.of(context).size;
     return Padding(
       padding: EdgeInsets.only(

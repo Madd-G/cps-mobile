@@ -11,14 +11,14 @@ class CityBloc extends Bloc<CityEvent, CityState> {
   final GetCities getCities;
 
   CityBloc(this.getCities) : super(CityEmpty()) {
-    on<CityEvent>((event, emit) async {
+    on<GetCity>((event, emit) async {
       emit(CityLoading());
       final result = await getCities.execute();
       result.fold(
         (failure) => emit(CityError(failure.message)),
-        (cityData) {
-          emit(CityLoaded(cityData));
-          if (cityData.isEmpty) {
+        (cities) {
+          emit(CityLoaded(cities));
+          if (cities.isEmpty) {
             emit(CityEmpty());
           }
         },

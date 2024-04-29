@@ -1,6 +1,6 @@
 import 'package:cps_mobile/core/utils/utils.dart';
 import 'package:cps_mobile/src/presentation/bloc/city_bloc/city_list_bloc.dart';
-import 'package:cps_mobile/src/presentation/bloc/user_bloc/user_list_bloc.dart';
+import 'package:cps_mobile/src/presentation/bloc/user_bloc/user_bloc.dart';
 import 'package:cps_mobile/src/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -20,6 +20,7 @@ class _CityDropdownState extends State<CityDropdown> {
     return Expanded(
       child: BlocBuilder<CityBloc, CityState>(
         builder: (context, state) {
+          debugPrint('...search state: $state');
           if (state is CityLoaded) {
             return RoundedContainer(
               height: 45.0,
@@ -51,11 +52,23 @@ class _CityDropdownState extends State<CityDropdown> {
                           size: 15.0,
                         ),
                         const SizedBox(width: 5.0),
-                        Text(
-                          selectedCity,
-                          style: CustomTextStyle.textRegular.copyWith(
-                            color: AppColors.greyColor,
-                          ),
+                        BlocBuilder<CityBloc, CityState>(
+                          builder: (context, state) {
+                            if (state is CityFiltered) {
+                              return Text(
+                                selectedCity,
+                                style: CustomTextStyle.textRegular.copyWith(
+                                  color: AppColors.greyColor,
+                                ),
+                              );
+                            }
+                            return Text(
+                              selectedCity,
+                              style: CustomTextStyle.textRegular.copyWith(
+                                color: AppColors.greyColor,
+                              ),
+                            );
+                          },
                         ),
                       ],
                     ),
@@ -66,8 +79,8 @@ class _CityDropdownState extends State<CityDropdown> {
                         },
                       );
                       context
-                          .read<UserListBloc>()
-                          .add(GetFilteredUserListEvent(city: selectedCity));
+                          .read<UserBloc>()
+                          .add(GetFilteredUsersEvent(city: selectedCity));
                     },
                   ),
                 ),
@@ -99,7 +112,7 @@ class _CityDropdownState extends State<CityDropdown> {
                         ),
                         const SizedBox(width: 5.0),
                         Text(
-                          selectedCity,
+                          "Filter by city",
                           style: CustomTextStyle.textRegular.copyWith(
                             color: AppColors.greyColor,
                           ),
@@ -112,8 +125,8 @@ class _CityDropdownState extends State<CityDropdown> {
                           selectedCity = val!;
                         },
                       );
-                      context.read<UserListBloc>().add(
-                            GetFilteredUserListEvent(city: selectedCity),
+                      context.read<UserBloc>().add(
+                            GetFilteredUsersEvent(city: selectedCity),
                           );
                     },
                   ),
