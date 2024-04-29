@@ -20,6 +20,15 @@ class CityLoaded extends CityState {
   List<Object> get props => [cities];
 }
 
+class CityFiltered extends CityState {
+  final List<CityEntity> cities;
+
+  const CityFiltered(this.cities);
+
+  @override
+  List<Object> get props => [cities];
+}
+
 class CityError extends CityState {
   final String message;
 

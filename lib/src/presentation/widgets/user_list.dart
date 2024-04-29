@@ -1,6 +1,5 @@
 import 'package:cps_mobile/core/res/app_media.dart';
-import 'package:cps_mobile/core/utils/app_colors.dart';
-import 'package:cps_mobile/core/utils/custom_text_style.dart';
+import 'package:cps_mobile/core/utils/utils.dart';
 import 'package:cps_mobile/src/domain/entities/user_entity.dart';
 import 'package:cps_mobile/src/presentation/widgets/user_detail.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +17,8 @@ class UserList extends StatelessWidget {
         showUserDetail(context, user);
       },
       child: Container(
-        margin: const EdgeInsets.only(bottom: 16),
+        // color: AppColors.borderSecondary,
+        margin: const EdgeInsets.only(bottom: 8),
         width: MediaQuery.of(context).size.width,
         child: Column(
           children: [
@@ -53,7 +53,7 @@ class UserList extends StatelessWidget {
                 ),
               ],
             ),
-            const Divider(),
+            const Divider(color: AppColors.borderSecondary),
           ],
         ),
       ),

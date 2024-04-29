@@ -1,22 +1,22 @@
-part of 'user_list_bloc.dart';
+part of 'user_bloc.dart';
 
-abstract class UserListEvent {}
+abstract class UserEvent {}
 
-class GetUsersEvent extends UserListEvent {}
+class GetUsersEvent extends UserEvent {}
 
-class GetFilteredUserListEvent extends UserListEvent {
+class GetFilteredUsersEvent extends UserEvent {
   String city;
 
-  GetFilteredUserListEvent({required this.city});
+  GetFilteredUsersEvent({required this.city});
 }
 
-class GetSortedUserListEvent extends UserListEvent {
+class GetSortedUsersEvent extends UserEvent {
   String sort;
 
-  GetSortedUserListEvent({required this.sort});
+  GetSortedUsersEvent({required this.sort});
 }
 
-class DeleteUserEvent extends UserListEvent {
+class DeleteUserEvent extends UserEvent {
   String userId;
 
   DeleteUserEvent({required this.userId});
