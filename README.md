@@ -1,6 +1,6 @@
 # cps_mobile
 
-CPS mobile merupakan sebuah aplikasi resource data user di Accurate. Pada aplikasi ini pengguna dapat melihat daftar user, detail info user, update data user, menghapus user, melakukan pencarian, melakukan sorting, filtering berdasarkan kota baik secara online maupun offline.
+CPS mobile merupakan sebuah aplikasi resource data user. Pada aplikasi ini pengguna dapat melihat daftar user, detail info user, update data user, menghapus user, melakukan pencarian, melakukan sorting, filtering berdasarkan kota baik secara online maupun offline.
 
 ## Video
 
